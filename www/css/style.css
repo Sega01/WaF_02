@@ -1,1 +1,21 @@
-/* Empty. Add your own CSS if you like */
+.pane {
+	background-color: #F7F7F7;
+}
+
+.bar.bar-stable {
+	background-color: #FFFFFF;
+}
+
+/**  Settings  */
+
+#status {
+	color: white;
+}
+
+#status-red {
+	color: red;
+}
+
+#status-green {
+	color: green;
+}

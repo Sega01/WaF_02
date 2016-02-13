@@ -1,5 +1,7 @@
 angular.module('starter.controllers', [])
 
+.controller('StartCtrl', function($scope) {})
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
@@ -52,5 +54,30 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('SettingsCtrl', function($scope) {
+
+//var macAddress = "00:13:EF:00:08:8B";
+
+ //      $scope.bluetoothSerial.connect(macAddress, app.onConnect, app.onDisconnect);
+  //bluetoothSerial.list(, );
+
+
+  bluetoothSerial.isConnected(
+    function() {
+        alert("Bluetooth is connected");
+    },
+    function() {
+        alert("Bluetooth is *not* connected");
+    }
+);
+/*
+  bluetoothSerial.isEnabled(function () {
+        //$('#status').css({'color': 'green'});
+        alert("Bluetooth is Enabled.");
+      }, function () {
+        //$('#status').css({'color': 'red'});
+        alert("Bluetooth is *not* Enabled.");
+      }
+    );
+*/
 });
