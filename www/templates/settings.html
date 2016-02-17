@@ -3,6 +3,18 @@
      Bluetooth-Connection
      <br/>
      <span id="status">Status</span> 
+      <!--input type="checkbox" id="android"><label for="android" class="android button_switch"></label-->
+
+      <li class="item item-toggle">
+	     Bluetooth connetion
+	     <label class="toggle toggle-assertive">
+	       <input type="checkbox" checked>
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+	  </li>
+
       <button ng-click="connectBlue()">Connect</button>
       <button ng-click="disconnectBlue()">Disconnect</button>
       <button ng-click="readingData()">Get Data from Arduino</button>

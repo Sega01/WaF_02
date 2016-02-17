@@ -1,3 +1,20 @@
+@font-face {
+    font-family:"Prime Regular";
+    src:url("fonts/prime_regular.ttf");
+}
+@font-face {
+	font-family:"Prime Light";
+    src:url("fonts/prime_light.ttf");
+}
+
+* {
+	font-family: 'Prime Light', Helvetica, sans-serif;
+}
+
+.platform-android .bar .title {
+	font-family: 'Prime Regular', Helvetica, sans-serif;
+}
+
 .pane {
 	background-color: #F7F7F7;
 }
@@ -5,6 +22,38 @@
 .bar.bar-stable {
 	background-color: #FFFFFF;
 }
+
+
+
+.bar-stable.menu-inner{
+	background-color: #4bd1db;
+	color: #ffffff;
+	border: none;
+}
+
+.bar-stable.menu-inner h1.title {
+	color: #ffffff;
+}
+
+.bar-stable .button.button-clear {
+color: #4bd1db;
+}
+
+.menu .scroll-content {
+	background-color: #4bd1db;
+}
+
+.menu .scroll-content .list a {
+	background-color: #4bd1db;
+	color: #ffffff;
+	border: none;
+	font-family: 'Prime Regular', Helvetica, sans-serif;
+}
+
+.menu .scroll-content .list ion-item {
+	border: none;
+}
+
 
 /**  Settings  */
 
@@ -18,4 +67,24 @@
 
 #status-green {
 	color: green;
+}
+
+
+
+
+/*### Avatar ### */
+.avatar {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+
+
+
+
+
+.toggle.toggle-assertive input:checked + .track {
+	border-color: #4bd1db;
+	background-color: #4bd1db;
 }
