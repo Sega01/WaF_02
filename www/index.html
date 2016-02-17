@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -21,9 +22,26 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
+
+    <!-- phaser js -->
+    <script src="js/phaser.min.js"></script>        
+    <script src="js/menu.js"></script>
+    <script src="js/load.js"></script>
+    <script src="js/play.js"></script>
+    <script src="js/enemy.js"></script>
+    <script src="js/hit.js"></script>
+    <script src="js/main.js"></script>  
+
   </head>
 
-  <body class="md" ng-app="starter">
-    <ion-nav-view></ion-nav-view>
+  <body class="md" >
+
+    
+
+    <div id="ionicapp" ng-app="starter">
+        
+        <ion-nav-view></ion-nav-view>
+    </div>
+
   </body>
 </html>

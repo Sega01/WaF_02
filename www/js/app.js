@@ -33,15 +33,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
   .state('app.start', {
     url: '/start',
     views: {
@@ -52,14 +43,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
-        }
+  .state('app.game', {
+    url: '/game',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/game.html',
+        controller: 'GameCtrl'
       }
-    })
+    }
+  })
+
     .state('app.settings', {
       url: '/settings',
       views: {

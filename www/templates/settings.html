@@ -1,11 +1,11 @@
 <ion-view view-title="">
   <ion-content>
-     Bluetooth-Verbindung
+     Bluetooth-Connection
      <br/>
      <span id="status">Status</span> 
-
+      <button ng-click="connectBlue()">Connect</button>
+      <button ng-click="disconnectBlue()">Disconnect</button>
+      <button ng-click="readingData()">Get Data from Arduino</button>
+      <div id="resultDiv"></div>
   </ion-content>
 </ion-view>
-<script type="text/javascript">
-	blue.initialize();
-</script>
