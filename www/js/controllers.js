@@ -154,6 +154,7 @@ angular.module('starter.controllers', [])
 
   //updates the game
   update:function() {
+
     this.scoreText.setText("Score: " + this.score);
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
@@ -274,16 +275,15 @@ gameoverState = {
       this.sfx_miss.play();
   }
 
-  game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'game');
-  game.state.add("load", loadState);
-  game.state.add("play", playState);
-  game.state.add("menu", menuState);
-  game.state.add("gameover", gameoverState);
-  //game.state.add("menu", menuState);
-  //game.state.add("shop", shopState);
-  //game.state.add("help", helpState);
 
-  game.state.start("load");
+    //game = new Phaser.Game("100%", "90%", Phaser.CANVAS, 'game');
+    game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
+    game.state.add("load", loadState);
+    game.state.add("play", playState);
+    game.state.add("menu", menuState);
+    game.state.add("gameover", gameoverState);
+
+    game.state.start("load");
 
   });
 
