@@ -10,6 +10,19 @@
 * {
 	font-family: 'Prime Light', Helvetica, sans-serif;
 }
+a {
+	text-decoration: none;
+}
+
+.fixed {
+    position: fixed;
+    bottom: 10px;
+}
+
+.spacer20 {
+    padding:0 20px 20px 20px;
+    width: 100%;
+}
 
 .platform-android .bar .title {
 	font-family: 'Prime Regular', Helvetica, sans-serif;
@@ -54,6 +67,9 @@ color: #4bd1db;
 	border: none;
 }
 
+.platform-android .bar .title, .platform-ios .bar .title {
+	color: #4bd1db;
+}
 
 /**  Settings  */
 
@@ -72,7 +88,7 @@ color: #4bd1db;
 
 
 
-/*### Avatar ### */
+/* ### Avatar ### */
 .avatar {
     width: 100%;
     margin: 0 auto;
@@ -80,11 +96,109 @@ color: #4bd1db;
 }
 
 
-
-
-
-
 .toggle.toggle-assertive input:checked + .track {
 	border-color: #4bd1db;
 	background-color: #4bd1db;
+}
+
+.toggle.toggle-assertive .track {
+	height: 13px;
+	margin-top: 10px;
+}
+
+.toggle .handle {
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 0px 1px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 0px 1px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 0px 1px rgba(0, 0, 0, 0.15);
+}
+
+
+/*### Tutorial ### */
+
+.slider {
+    height: 100%;
+
+}
+.slider-slide {
+    padding-top: 80px;
+    color: #fff;
+    text-align: center;
+    background-color: #4bd1db;
+}
+
+.slider h3 {
+	font-family: 'Prime Regular', Helvetica, sans-serif;
+	color: #fff;
+	margin-bottom: 40px;
+	font-size: 32px
+}
+
+.slider p {
+	font-family: 'Prime Regular', Helvetica, sans-serif;
+	color: #fff;
+	font-size: 18px;
+	padding: 0 20px 0 20px;
+	width: 100%;
+}
+
+#logo {
+    margin: 30px 0px;
+}
+
+#list {
+    width: 170px;
+    margin: 30px auto;
+    font-size: 20px;
+}
+#list ol {
+    margin-top: 30px;
+}
+#list ol li {
+    text-align: left;
+    list-style: decimal;
+    margin: 10px 0px;
+}
+
+.button.ng-hide{
+    display:none;
+}
+
+.component_connect {
+    margin: 2%;
+    font-size: 42px;
+    color:#e1dcd2;
+}
+
+.component_connect img {
+	width: 100%;
+	padding: 0px 20px 0px 20px;
+}
+
+.tutorial_slide_2 {
+	position: absolute;
+	right: -20px;
+	top: 30%;
+	/* bottom: 50%; */
+	display: block;
+	width: 100%;
+}
+
+.component_connected {
+    color:#e00913;
+}
+
+.spinner svg {
+    width: 52px !important;
+    height: 52px !important;
+}
+
+.slider-pager .slider-pager-page {
+	color: #fff;
+	font-size: 10px;
+}
+
+.button-block {
+	color: #4bd1db;
+	font-family: 'Prime Regular', Helvetica, sans-serif;
+	font-size: 18px;
 }

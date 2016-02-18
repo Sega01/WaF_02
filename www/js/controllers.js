@@ -4,6 +4,59 @@ angular.module('starter.controllers', [])
 
 })
 
+.controller('MainCtrl', function($scope, $state, $timeout) {
+  console.log('MainCtrl');
+  
+  $scope.toIntro = function(){
+    $state.go('intro');
+  }
+
+
+})
+
+.controller('IntroCtrl', function($scope, $state, $ionicModal, $ionicSlideBoxDelegate) {
+ 
+  // Called to navigate to the main app
+  $scope.startApp = function() {
+    $state.go('main');
+  };
+  $scope.next = function() {
+    $ionicSlideBoxDelegate.next();
+  };
+  $scope.previous = function() {
+    $ionicSlideBoxDelegate.previous();
+  };
+
+  // Called each time the slide changes
+  $scope.slideChanged = function(index) {
+    $scope.slideIndex = index;
+  };
+
+
+  // Wizard abbrechen
+  $ionicModal.fromTemplateUrl('templates/cancel.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.closeCancellation = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.cancelWizzard = function() {
+    $scope.modal.show();
+  };
+
+  $scope.backHome = function(){
+    $state.go('app.rezepte');
+    $scope.modal.hide();
+  }
+
+})
+
+
+
 .controller('GameCtrl', function($scope) {
 
   $scope.$on("$ionicView.beforeEnter", function() {

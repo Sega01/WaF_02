@@ -1,0 +1,49 @@
+<ion-view view-title="Preperations">
+
+<ion-nav-buttons side="right"> 
+  <button class="button button-positive button-clear"
+  ng-click="cancelWizzard()" ng-show="slideIndex != index">
+  Abbrechen
+  </button>
+</ion-nav-buttons>
+<ion-slide-box on-slide-changed="slideChanged(index)">
+<ion-slide>
+  <h3>Kettlebell Hero</h3>
+  <div class="component_connect component_connected">
+    <img src="img/tutorial_slide_1.png"><br />
+  </div>
+  <p class="fixed" style="bottom: 10%">
+    Stick the sensors to your Kettlebell.
+  </p>
+</ion-slide>
+
+
+
+<ion-slide>
+  <h3>Kettlebell Hero</h3>
+  <img class="tutorial_slide_2" src="img/tutorial_slide_2.png">
+  <p class="fixed" style="bottom: 10%">
+    Navigate the ball with your Kettlebell and collect all the rings.
+  </p>  
+</ion-slide>
+
+<ion-slide>
+<h3>Kettlebell Hero</h3>
+  <img class="avatar" src="img/char_111_determind.svg">
+
+  <div class="spacer20 fixed">
+    <a href="#/app/game" nav-direction="forward">
+      <button class="button button-block">
+        Let´s get it on!
+        <!--i class="icon ion-ios-arrow-right ion-android-arrow-forward"></i-->
+      </button>
+    </a>
+</div>
+</ion-slide>
+
+</ion-slide-box>
+</ion-view>
+
+
+
+
