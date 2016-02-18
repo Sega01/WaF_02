@@ -154,11 +154,6 @@ angular.module('starter.controllers', [])
 
   //updates the game
   update:function() {
-    bluetoothSerial.clear;
-    bluetoothSerial.readUntil('\n', function (data) {
-      var movement = data;
-    }); 
-
     this.scoreText.setText("Score: " + this.score);
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
