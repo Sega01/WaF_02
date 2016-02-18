@@ -61,6 +61,12 @@ angular.module('starter.controllers', [])
 
   $scope.$on("$ionicView.beforeEnter", function() {
 
+  var macAddress = "20:13:07:18:02:77";
+    
+  $scope.connectBlue = function() {
+    bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+   };
+
     loadState = {
   //loads everything
   preload:function() {
@@ -148,23 +154,24 @@ angular.module('starter.controllers', [])
 
   //updates the game
   update:function() {
-  this.scoreText.setText("Score: " + this.score);
+    bluetoothSerial.clear;
+    bluetoothSerial.readUntil('\n', function (data) {
+      var movement = data;
+    }); 
+
+    this.scoreText.setText("Score: " + this.score);
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
-      {
-          this.circle.y = 200;
-      }
-      else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
-      {
-          this.circle.y = 400;
-      }
+    {
+        this.circle.y = 200;
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+    {
+        this.circle.y = 400;
+    }
 
-
-
-      game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
+    game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
-  
-  
 };
 
 gamePause = function() {
@@ -187,14 +194,9 @@ menuState = {
     game.time.events.add(Phaser.Timer.SECOND * 5, resumeGame, this);
   },
 
-
-
-
   update:function() {
 
   }
-
-  
 
 };
 
@@ -212,18 +214,13 @@ gameoverState = {
     
   },
 
-
-
-
   update:function() {
       
   }
-
   
-
 };
 
-//play button
+  //play button
   resumeGame = function() {
     game.state.start("play");
     //this.sfx_game.resume();
@@ -240,62 +237,60 @@ gameoverState = {
   }
 
   //for adding enemies and stuff
-addMore = function() {
-  var x;
-  var y;
-  var velX;
+  addMore = function() {
+    var x;
+    var y;
+    var velX;
 
-  //decides which side the robots will spawn in
-  if (Math.random() > 1/2 ) {
-    x = playState.game.width - 10;
-    y = 150;
-    velX = -350;
-  } else {
-    x = playState.game.width - 10;
-    y = 350;
-    velX = -350;
+    //decides which side the robots will spawn in
+    if (Math.random() > 1/2 ) {
+      x = playState.game.width - 10;
+      y = 150;
+      velX = -350;
+    } else {
+      x = playState.game.width - 10;
+      y = 350;
+      velX = -350;
+    };
+
+    //rings
+    var ring = playState.rings.create(x, y, "ring");
+    playState.game.physics.enable(ring, Phaser.Physics.ARCADE);
+      ring.body.velocity.x = velX;
+      ring.outOfBoundsKill = true;
+
+      ring.checkWorldBounds = true;
+      ring.events.onOutOfBounds.add(missEnemy, this);
+  }
+
+  //when a player hits the enemies
+
+  hitEnemy = function(circle, ring) {
+    
+      ring.kill();
+      this.score = this.score + 100;
+      this.sfx_hit.play();
   };
 
-  //rings
-  var ring = playState.rings.create(x, y, "ring");
-  playState.game.physics.enable(ring, Phaser.Physics.ARCADE);
-    ring.body.velocity.x = velX;
-    ring.outOfBoundsKill = true;
+  missEnemy = function(ring) {
+      ring.destroy();
+      console.log("Miss");
+      this.score = this.score -500;
+      this.sfx_miss.play();
+  }
 
-    ring.checkWorldBounds = true;
-    ring.events.onOutOfBounds.add(missEnemy, this);
-}
+  game = new Phaser.Game("100%", "100%", Phaser.CANVAS, 'game');
+  game.state.add("load", loadState);
+  game.state.add("play", playState);
+  game.state.add("menu", menuState);
+  game.state.add("gameover", gameoverState);
+  //game.state.add("menu", menuState);
+  //game.state.add("shop", shopState);
+  //game.state.add("help", helpState);
 
-//when a player hits the enemies
+  game.state.start("load");
 
-hitEnemy = function(circle, ring) {
-  
-    ring.kill();
-    this.score = this.score + 100;
-    this.sfx_hit.play();
-};
-
-missEnemy = function(ring) {
-    ring.destroy();
-    console.log("Miss");
-    this.score = this.score -500;
-    this.sfx_miss.play();
-}
-
-
-
-    game = new Phaser.Game("100%", "90%", Phaser.CANVAS, 'game');
-    game.state.add("load", loadState);
-    game.state.add("play", playState);
-    game.state.add("menu", menuState);
-    game.state.add("gameover", gameoverState);
-    //game.state.add("menu", menuState);
-    //game.state.add("shop", shopState);
-    //game.state.add("help", helpState);
-
-    game.state.start("load");
-
-});
+  });
 
 
 })
@@ -312,40 +307,33 @@ missEnemy = function(ring) {
  
 })
 
-
-.controller('SettingsCtrl', function($scope) {
-
-var macAddress = "20:13:07:18:02:77";
-  
-$scope.connectBlue = function() {
-   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-  };
-
-$scope.disconnectBlue = function() {
-   bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
-  };
-
-$scope.subscribe = function() {
-  // subscribe for incoming data
-  bluetoothSerial.subscribeData(readingData(), alert("iwas geht nicht"));
-  resultDiv.innerHTML = ""; 
-};
-
-$scope.readingData = function() {
-  bluetoothSerial.read(function (data) {
-    resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
-    resultDiv.scrollTop = resultDiv.scrollHeight;
-  }); 
-};
-
+.controller('SettingsCtrl', function($scope, $interval) {
 /*
-  bluetoothSerial.isEnabled(function () {
-        //$('#status').css({'color': 'green'});
-        alert("Bluetooth is Enabled.");
-      }, function () {
-        //$('#status').css({'color': 'red'});
-        alert("Bluetooth is *not* Enabled.");
-      }
-    );
+  var macAddress = "20:13:07:18:02:77";
+    
+  $scope.connectBlue = function() {
+     bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+   };
+
+  $scope.disconnectBlue = function() {
+     bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
+    };
+
+    setInterval(function() {
+      resultDiv.innerHTML = "";
+      bluetoothSerial.clear;
+      bluetoothSerial.readUntil('\n', function (data) {
+      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
+    }); 
+    }, 250);
 */
+  /*$scope.readingData = function() {
+    bluetoothSerial.read(function (data) {
+      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
+      resultDiv.scrollTop = resultDiv.scrollHeight;
+    }); 
+  };
+
+  $interval(, 1000);*/
+  
 });
