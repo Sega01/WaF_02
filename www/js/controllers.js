@@ -1,6 +1,11 @@
 angular.module('starter.controllers', [])
 
 .controller('StartCtrl', function($scope) {
+  /*function updateArms(){
+    $("a.muscles_urge.arms").html(<p>);
+     //setTimeout(updateArms);
+  };*/
+
 
 })
 
@@ -71,7 +76,7 @@ angular.module('starter.controllers', [])
   //loads everything
   preload:function() {
     textStyle = {
-      font: "64px Prime",
+      font: "64px Titillium Semibold",
       fill: "#ffffff",
       boundsAlignH: "center",
       align: "center"
@@ -80,7 +85,7 @@ angular.module('starter.controllers', [])
     };
 
     textStyleSmall = {
-      font: "32px Prime",
+      font: "32px Titillium Regular",
       fill: "#ffffff",
       boundsAlignH: "center",
       align: "center"
@@ -114,35 +119,38 @@ angular.module('starter.controllers', [])
   //creates everything
   create:function() {
     game.stage.backgroundColor = '#f7f7f7';
-      line1 = new Phaser.Line(0, 200, window.innerWidth, 200);
-      line2 = new Phaser.Line(0, 400, window.innerWidth, 400);
+    line1 = new Phaser.Line(0, 200, window.innerWidth, 200);
+    line2 = new Phaser.Line(0, 400, window.innerWidth, 400);
 
-      this.rings = this.game.add.group();
-      //timer
-        this.timer = this.game.time.events.loop(750, addMore, this); 
+    this.rings = this.game.add.group();
+    //timer
+    this.timer = this.game.time.events.loop(750, addMore, this); 
 
 
-        var circlePositionY = 400;
-        //this.level = 1;
-        this.circle = game.add.sprite(50, circlePositionY, 'circle');
-      this.circle.anchor.set(0.5);
-      this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
+    var circlePositionY = 400;
+    //this.level = 1;
+    this.circle = game.add.sprite(50, circlePositionY, 'circle');
+    this.circle.anchor.set(0.5);
+    this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
       
-      this.scoreText = this.game.add.text(20, 60, "");
-      this.sfx_hit = this.game.add.audio('sfx_hit');
-      this.sfx_miss = this.game.add.audio('sfx_miss');
-      this.sfx_cheer = this.game.add.audio('sfx_cheer');
-      this.sfx_game = this.game.add.audio('sfx_game',1,true);
+    this.scoreText = this.game.add.text(20, 60, "");
+    this.sfx_hit = this.game.add.audio('sfx_hit');
+    this.sfx_miss = this.game.add.audio('sfx_miss');
+    this.sfx_cheer = this.game.add.audio('sfx_cheer');
+    this.sfx_game = this.game.add.audio('sfx_game',1,true);
+    //this.sounds = [ this.sfx_hit, this.sfx_miss, this.sfx_game, this.sfx_cheer ];
+    //game.sound.setDecodedCallback(this.sounds, this);
       
     
       if (this.level !== 1)
       {
         this.sfx_game.play();
         game.time.events.add(Phaser.Timer.SECOND * 10, switchHands, this);
+
     }
     if (this.level === 1)
       {
-        this.sfx_game.pause();
+        
         game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
       }
   },
@@ -159,21 +167,20 @@ angular.module('starter.controllers', [])
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
+        this.sfx_game.play();
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
     {
         this.circle.y = 400;
+        this.sfx_game.pause();
     }
-
+    game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
 };
 
-gamePause = function() {
-  game.paused = true;
-  console.log("Pause");
-}
+
 
 //THE MENU STATE
 menuState = {
@@ -230,7 +237,13 @@ gameoverState = {
     playState.level = 2;
     //playState.this.sfx_game.destroy();
     game.state.start("gameover");
+    console.log("game over wurde ausgeführt");
   }
+
+  gamePause = function() {
+  this.sfx_game.pause();
+  console.log("wurde ausgeführt");
+}
 
   //for adding enemies and stuff
   addMore = function() {
@@ -277,7 +290,7 @@ gameoverState = {
 
 
     //game = new Phaser.Game("100%", "90%", Phaser.CANVAS, 'game');
-    game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.AUTO, 'game');
+    game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'game');
     game.state.add("load", loadState);
     game.state.add("play", playState);
     game.state.add("menu", menuState);
