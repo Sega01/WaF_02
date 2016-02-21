@@ -1,11 +1,46 @@
 angular.module('starter.controllers', [])
 
-.controller('StartCtrl', function($scope) {
-  /*function updateArms(){
-    $("a.muscles_urge.arms").html(<p>);
-     //setTimeout(updateArms);
-  };*/
+.controller('StartCtrl', function($scope, $timeout) {
+  
+  
+timerArms = 0;
+timerTorso = 0;
+timerLegs = 0;
 
+$scope.updateArms = function(){
+  if (timerArms == 1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+$scope.updateTorso = function(){
+  if (timerTorso == 1){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+$scope.updateLegs = function(){
+  if (timerLegs == 1){
+    return true;
+  } else {
+    return false;
+  }
+}
+ 
+$timeout(function() {
+  timerArms = 1;
+}, 5000)
+
+$timeout(function() {
+       timerTorso = 1;
+    }, 10000)
+$timeout(function() {
+       timerLegs = 1;
+    }, 15000)
 
 })
 
