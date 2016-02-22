@@ -146,7 +146,7 @@ $timeout(function() {
 
   },
   create:function() {
-    game.state.start("play");
+    game.state.start("boot");
     playState.score = 0;
   }
 
@@ -255,6 +255,24 @@ $timeout(function() {
 };
 
 
+bootState = {
+  create:function() {
+    game.stage.backgroundColor = '#4bd1db';
+    
+    text = this.game.add.text(0, 0, "Get Ready!\nThe game is about to begin", textStyle);
+    text.setTextBounds(0, 50, window.innerWidth, 50);
+
+    this.success = game.add.sprite(150, window.innerHeight-800, 'success_slim');
+
+    //10 bis Spielstart
+    game.time.events.add(Phaser.Timer.SECOND * 10, resumeGame, this);
+  },
+
+  update:function() {
+
+  }
+
+};
 
 //THE MENU STATE
 menuState = {
@@ -382,6 +400,7 @@ gameoverState = {
     //game = new Phaser.Game("100%", "90%", Phaser.CANVAS, 'game');
     game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'game');
     game.state.add("load", loadState);
+    game.state.add("boot", bootState);
     game.state.add("play", playState);
     game.state.add("menu", menuState);
     game.state.add("gameover", gameoverState);
