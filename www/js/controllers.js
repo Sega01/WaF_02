@@ -34,13 +34,13 @@ $scope.updateLegs = function(){
 $timeout(function() {
   timerArms = 1;
 }, 5000)
-
+/*
 $timeout(function() {
        timerTorso = 1;
     }, 10000)
 $timeout(function() {
        timerLegs = 1;
-    }, 15000)
+    }, 15000)*/
 
 })
 
@@ -97,7 +97,7 @@ $timeout(function() {
 
 
 
-.controller('GameCtrl', function($scope) {
+.controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
 
   $scope.$on("$ionicView.beforeEnter", function() {
 
@@ -127,16 +127,24 @@ $timeout(function() {
       //wordWrap: true,
       //wordWrapWidth: 480
     };
+    buttonText = {
+      font: "32px Titillium Regular",
+      fill: "#4bd1db",
+      //fill: "#FF0000",
+      boundsAlignH: "center",
+      align: "center"
+    };
 
     game.stage.backgroundColor = '#f7f7f7';
     game.load.image('ring', "img/ring.png");
       game.load.image('circle', "img/circle.png");
       game.load.image('success_slim', "img/success.png");
       game.load.image('muscleGrowth1', "img/muscle_growth_1.png");
+      game.load.image('button', "img/button.png");
 
       game.load.audio('sfx_hit', 'audio/hit.mp3');
       game.load.audio('sfx_miss', 'audio/miss.mp3');
-      game.load.audio('sfx_game', 'audio/game_music.mp3');
+      game.load.audio('sfx_game', 'audio/game_music.m4a'/*,'audio/game_music.ogg'*/);
       game.load.audio('sfx_cheer', 'audio/cheer.mp3');
 
   },
@@ -173,9 +181,9 @@ $timeout(function() {
     this.sfx_miss = this.game.add.audio('sfx_miss');
     this.sfx_cheer = this.game.add.audio('sfx_cheer');
     this.sfx_game = this.game.add.audio('sfx_game',1,true);
-    //this.sounds = [ this.sfx_hit, this.sfx_miss, this.sfx_game, this.sfx_cheer ];
+    
+      //this.sounds = [ this.sfx_hit, this.sfx_miss, this.sfx_game, this.sfx_cheer ];
     //game.sound.setDecodedCallback(this.sounds, this);
-      
     
       if (this.level !== 1)
       {
@@ -185,7 +193,7 @@ $timeout(function() {
     }
     if (this.level === 1)
       {
-        
+        this.sfx_game.pause();
         game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
       }
   },
@@ -193,7 +201,16 @@ $timeout(function() {
   render:function() {
       game.debug.geom(line1, '#4bd1db');
       game.debug.geom(line2, '#4bd1db');
+
+      /*game.debug.soundInfo(this.sfx_game, 32, 200);
+
+      if (this.sfx_game.isDecoding)
+      {
+          game.debug.text("Decoding MP3 ...", 32, 400);
+      }*/
   },
+
+
 
   //updates the game
   update:function() {
@@ -202,12 +219,12 @@ $timeout(function() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
-        this.sfx_game.play();
+        //this.sfx_game.play();
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
     {
         this.circle.y = 400;
-        this.sfx_game.pause();
+        //this.sfx_game.pause();
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
@@ -248,13 +265,29 @@ gameoverState = {
     textSuccesscontent.setTextBounds(0, 180, window.innerWidth, 50);
 
     this.success = game.add.sprite(30, window.innerHeight-800, 'muscleGrowth1');
+
+    this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-47, "button", this.returnBtn);
+    this.ButtonReturn.anchor.set(0.5);
+    textButtonReturn = this.game.add.text(20, 80, "Return to main menu", buttonText);
+    textButtonReturn.setTextBounds(0,  window.innerHeight-147, window.innerWidth,0);
+
     playState.sfx_cheer.play();
     
   },
 
   update:function() {
       
-  }
+  },
+
+  returnBtn:function() {
+    game.destroy();
+    $ionicHistory.nextViewOptions({
+    disableBack: true
+    });
+    timerArms = 0;
+    $ionicViewSwitcher.nextDirection('back');
+    $state.go('app.start');
+  },
   
 };
 

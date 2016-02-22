@@ -118,11 +118,24 @@ color: #4bd1db;
 .muscles_urge.arms{
 	top: 45%;
 }
+
+.platform-android .muscles_urge.arms{
+  top: 38%;
+}
+
 .muscles_urge.torso{
 	top: 52%;
 }
+
+.platform-android .muscles_urge.torso{
+  top: 45%;
+}
 .muscles_urge.legs{
 	top: 70%;
+}
+
+.platform-android .muscles_urge.legs{
+  top: 63%;
 }
 
 
@@ -175,6 +188,7 @@ color: #4bd1db;
 	font-weight: 600;
 	color: #fff;
 	font-size: 26px;
+  line-height: 32px;
 	padding: 0 20px 0 20px;
 	width: 100%;
 }
@@ -244,7 +258,7 @@ color: #4bd1db;
 /*### Game ### */
 
 #game {
-	height: 1280px;
+	/*height: 1280px;*/
 }
 
 .fixed {
