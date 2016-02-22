@@ -51,7 +51,6 @@ $timeout(function() {
     $state.go('intro');
   }
 
-
 })
 
 .controller('IntroCtrl', function($scope, $state, $ionicModal, $ionicSlideBoxDelegate) {
@@ -91,21 +90,19 @@ $timeout(function() {
   $scope.backHome = function(){
     $state.go('app.rezepte');
     $scope.modal.hide();
-  }
+  };
 
 })
 
 
-
 .controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
 
-  $scope.$on("$ionicView.beforeEnter", function() {
 
   var macAddress = "20:13:07:18:02:77";
     
-  $scope.connectBlue = function() {
-    bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-   };
+  bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+
+  $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
   //loads everything
@@ -184,6 +181,7 @@ $timeout(function() {
     
       //this.sounds = [ this.sfx_hit, this.sfx_miss, this.sfx_game, this.sfx_cheer ];
     //game.sound.setDecodedCallback(this.sounds, this);
+
     
       if (this.level !== 1)
       {
@@ -193,8 +191,10 @@ $timeout(function() {
     }
     if (this.level === 1)
       {
+
         this.sfx_game.pause();
         game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
+
       }
   },
 
@@ -214,8 +214,28 @@ $timeout(function() {
 
   //updates the game
   update:function() {
-
+    //bluetoothSerial.clear;
+    bluetoothSerial.readUntil('\n', function (data) {
+      var movingArduino = data;
+      movingArduino = parseInt(movingArduino);
+      if (movingArduino == 1) 
+      {
+        this.moving = true;
+      } else {
+        this.moving = false;
+      }
+      resultDiv.innerHTML = "movingArduino ist: " + movingArduino + "<br/> und moving ist: " + this.moving;
+    }); 
     this.scoreText.setText("Score: " + this.score);
+    if (this.moving == false)
+    {   
+        this.circle.y = 400;
+    }
+    else if (this.moving == true)
+    {
+        this.circle.y = 200;
+    }
+    /*
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
@@ -227,6 +247,8 @@ $timeout(function() {
         //this.sfx_game.pause();
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
+
+    */
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
@@ -384,6 +406,7 @@ gameoverState = {
 })
 
 .controller('SettingsCtrl', function($scope, $interval) {
+
 /*
   var macAddress = "20:13:07:18:02:77";
     
@@ -394,8 +417,8 @@ gameoverState = {
   $scope.disconnectBlue = function() {
      bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
     };
-
-    setInterval(function() {
+  */
+  /*  setInterval(function() {
       resultDiv.innerHTML = "";
       bluetoothSerial.clear;
       bluetoothSerial.readUntil('\n', function (data) {
