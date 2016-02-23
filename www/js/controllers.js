@@ -45,7 +45,7 @@ $timeout(function() {
 })
 
 .controller('MainCtrl', function($scope, $state, $timeout) {
-  console.log('MainCtrl');
+  //console.log('MainCtrl');
   
   $scope.toIntro = function(){
     $state.go('intro');
@@ -97,8 +97,12 @@ $timeout(function() {
 
 .controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
 
+<<<<<<< Updated upstream
 
   /*var macAddress = "20:13:07:18:02:77";
+=======
+  var macAddress = "20:13:07:18:02:77";
+>>>>>>> Stashed changes
     
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
 */
@@ -151,7 +155,7 @@ $timeout(function() {
 
   },
   create:function() {
-    game.state.start("boot");
+    game.state.start("play");
     playState.score = 0;
     playState.health = 3;
 
@@ -177,12 +181,15 @@ $timeout(function() {
     this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'health');
 
     var circlePositionY = 400;
+    this.circleposition2 = 800;
     //this.level = 1;
     this.circle = game.add.sprite(50, circlePositionY, 'circle');
     this.circle.anchor.set(0.5);
     this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
       
     this.scoreText = this.game.add.text(20, 60, "");
+    this.moving = 0;
+    movingArduino = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
     this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
@@ -203,7 +210,7 @@ $timeout(function() {
       {
 
         this.sfx_game.pause();
-        game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
+        game.time.events.add(Phaser.Timer.SECOND * 10000, gameOver, this);
 
       }
   },
@@ -220,31 +227,23 @@ $timeout(function() {
       }*/
   },
 
-
-
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    /*bluetoothSerial.readUntil('\n', function (data) {
-      var movingArduino = data;
+    bluetoothSerial.readUntil('\n', function (data) {
+      movingArduino = data;
       movingArduino = parseInt(movingArduino);
-      if (movingArduino == 1) 
-      {
-        this.moving = true;
-      } else {
-        this.moving = false;
-      }
-      resultDiv.innerHTML = "movingArduino ist: " + movingArduino + "<br/> und moving ist: " + this.moving;
-    }); 
-    this.scoreText.setText("Score: " + this.score);
-    if (this.moving == false)
+      resultDiv.innerHTML = "movingArduino ist: " + movingArduino;
+    });
+    this.moving = movingArduino; 
+    if (this.moving == 1)
     {   
-        this.circle.y = 400;
-    }
-    else if (this.moving == true)
-    {
+        if (this.circle.y == 200) {
+          this.circle.y = 400;
+        }
+    } else {
         this.circle.y = 200;
-    }*/
+    }
     
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
@@ -257,8 +256,6 @@ $timeout(function() {
         //this.sfx_game.pause();
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
-
-    
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
@@ -287,7 +284,7 @@ bootState = {
 //THE MENU STATE
 menuState = {
   create:function() {
-    console.log("gestartet");
+    //console.log("gestartet");
     game.stage.backgroundColor = '#4bd1db';
     
     text = this.game.add.text(0, 0, "Well done!\nTime to switch hands…", textStyle);
@@ -406,12 +403,12 @@ gameoverState = {
     playState.level = 2;
     //playState.this.sfx_game.destroy();
     game.state.start("gameover");
-    console.log("game over wurde ausgeführt");
+    //console.log("game over wurde ausgeführt");
   }
 
   gamePause = function() {
   this.sfx_game.pause();
-  console.log("wurde ausgeführt");
+  //console.log("wurde ausgeführt");
 }
 
   //for adding enemies and stuff
@@ -452,7 +449,7 @@ gameoverState = {
 
   missEnemy = function(ring) {
       ring.destroy();
-      console.log("Miss");
+      //console.log("Miss");
       this.score = this.score -500;
       this.health = this.health-1;
       if (this.health === 2) {
@@ -507,26 +504,9 @@ gameoverState = {
   $scope.connectBlue = function() {
      bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
    };
-
   $scope.disconnectBlue = function() {
      bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
     };
   */
-  /*  setInterval(function() {
-      resultDiv.innerHTML = "";
-      bluetoothSerial.clear;
-      bluetoothSerial.readUntil('\n', function (data) {
-      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
-    }); 
-    }, 250);
-*/
-  /*$scope.readingData = function() {
-    bluetoothSerial.read(function (data) {
-      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
-      resultDiv.scrollTop = resultDiv.scrollHeight;
-    }); 
-  };
-
-  $interval(, 1000);*/
   
 });
