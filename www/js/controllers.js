@@ -98,10 +98,10 @@ $timeout(function() {
 .controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
 
 
-  var macAddress = "20:13:07:18:02:77";
+  /*var macAddress = "20:13:07:18:02:77";
     
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-
+*/
   $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
@@ -135,19 +135,26 @@ $timeout(function() {
     game.stage.backgroundColor = '#f7f7f7';
     game.load.image('ring', "img/ring.png");
       game.load.image('circle', "img/circle.png");
+      game.load.image('circle', "img/circle.png");
+      game.load.image('health', "img/health.png");
+      game.load.image('healthLost', "img/health_lost.png");
       game.load.image('success_slim', "img/success.png");
+      game.load.image('fail_slim', "img/fail.png");
       game.load.image('muscleGrowth1', "img/muscle_growth_1.png");
       game.load.image('button', "img/button.png");
 
       game.load.audio('sfx_hit', 'audio/hit.mp3');
       game.load.audio('sfx_miss', 'audio/miss.mp3');
       game.load.audio('sfx_game', 'audio/game_music.m4a'/*,'audio/game_music.ogg'*/);
+      game.load.audio('sfx_exhausted', 'audio/exhausted.mp3');
       game.load.audio('sfx_cheer', 'audio/cheer.mp3');
 
   },
   create:function() {
     game.state.start("boot");
     playState.score = 0;
+    playState.health = 3;
+
   }
 
 
@@ -165,7 +172,9 @@ $timeout(function() {
     this.rings = this.game.add.group();
     //timer
     this.timer = this.game.time.events.loop(750, addMore, this); 
-
+    this.gfx_health1 = game.add.sprite(window.innerWidth-80, 40, 'health');
+    this.gfx_health2 = game.add.sprite(window.innerWidth-160, 40, 'health');
+    this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'health');
 
     var circlePositionY = 400;
     //this.level = 1;
@@ -176,6 +185,7 @@ $timeout(function() {
     this.scoreText = this.game.add.text(20, 60, "");
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
+    this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
     this.sfx_cheer = this.game.add.audio('sfx_cheer');
     this.sfx_game = this.game.add.audio('sfx_game',1,true);
     
@@ -215,7 +225,7 @@ $timeout(function() {
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    bluetoothSerial.readUntil('\n', function (data) {
+    /*bluetoothSerial.readUntil('\n', function (data) {
       var movingArduino = data;
       movingArduino = parseInt(movingArduino);
       if (movingArduino == 1) 
@@ -234,8 +244,8 @@ $timeout(function() {
     else if (this.moving == true)
     {
         this.circle.y = 200;
-    }
-    /*
+    }*/
+    
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
@@ -248,7 +258,7 @@ $timeout(function() {
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
 
-    */
+    
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
@@ -295,6 +305,57 @@ menuState = {
 
 };
 
+failState = {
+  create:function() {
+    game.stage.backgroundColor = '#4bd1db';
+    
+    textSuccessHeadline = this.game.add.text(0, 0, "Too bad!", textStyle);
+    textSuccesscontent = this.game.add.text(0, 0, "Your partner wore out \nTake a break and keep training!", textStyleSmall);
+    textSuccessHeadline.setTextBounds(0, 50, window.innerWidth, 50);
+    textSuccesscontent.setTextBounds(0, 180, window.innerWidth, 50);
+
+    this.fail = game.add.sprite(150, window.innerHeight-800, 'fail_slim');
+    playState.sfx_exhausted.play();
+
+    this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-117, "button", this.retryGame);
+    this.ButtonReturn.anchor.set(0.5);
+    textButtonReturn = this.game.add.text(20, 80, "Retry", buttonText);
+    textButtonReturn.setTextBounds(0,  window.innerHeight-217, window.innerWidth,0);
+
+    this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-47, "button", this.returnBtn);
+    this.ButtonReturn.anchor.set(0.5);
+    textButtonReturn = this.game.add.text(20, 80, "Return to main menu", buttonText);
+    textButtonReturn.setTextBounds(0,  window.innerHeight-147, window.innerWidth,0);
+
+    //playState.sfx_cheer.play();
+    
+  },
+
+  update:function() {
+      
+  },
+
+  returnBtn:function() {
+    game.destroy();
+    $ionicHistory.nextViewOptions({
+    disableBack: true
+    });
+    timerArms = 0;
+    $ionicViewSwitcher.nextDirection('back');
+    $state.go('app.start');
+  },
+
+  retryGame:function() {
+    playState.sfx_game.destroy();
+    playState.health = 3;
+    game.state.start("boot");
+    //this.sfx_game.resume();
+  },
+  
+};
+
+
+
 gameoverState = {
   create:function() {
     game.stage.backgroundColor = '#4bd1db';
@@ -330,9 +391,9 @@ gameoverState = {
   },
   
 };
-
   //play button
   resumeGame = function() {
+
     game.state.start("play");
     //this.sfx_game.resume();
   },
@@ -393,6 +454,19 @@ gameoverState = {
       ring.destroy();
       console.log("Miss");
       this.score = this.score -500;
+      this.health = this.health-1;
+      if (this.health === 2) {
+        this.gfx_health3.kill();
+        this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'healthLost');
+      }
+      if (this.health === 1) {
+        this.gfx_health2.kill();
+        this.gfx_health2 = game.add.sprite(window.innerWidth-160, 40, 'healthLost');
+      }
+      if (this.health === 0) {
+        this.gfx_health1.kill();
+        game.state.start("fail");
+      }
       this.sfx_miss.play();
   }
 
@@ -403,6 +477,7 @@ gameoverState = {
     game.state.add("boot", bootState);
     game.state.add("play", playState);
     game.state.add("menu", menuState);
+    game.state.add("fail", failState);
     game.state.add("gameover", gameoverState);
 
     game.state.start("load");
