@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['spotify'])
   SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
   SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
   // If you already have an auth token
-  SpotifyProvider.setAuthToken('BQAga5II7lKJ6WZ3D89VbL_94MYJ7RkJqMGWHPM-mg0Wm3wNPSpciuioOjjBsaISZiBYe5PBaD_3KkvHXPXlrFM-R9zlrjX4HlvLaU9FKHht_ZEXQF_XePSNN0-ik3SOoyfnl-9TaDpPbKxZ4LDsQVJ3GGb-L82Jrb6GzK5bglHjlg5f4E8Wmf7vCByG3ss9_XygmnYun3CMa_1VvhJxKOhHUGe5-1rvGhAo0sDFb84-OMi8lsFS7C-DTH4kWhazidLcNJcckz6lD9HRydnGDcBTRAEobImBZnAqrIPWj35FLUOK');
+  SpotifyProvider.setAuthToken('BQDRsHweiFx1zsA4v3xWG2wJZ1BZYxc4Pl1uPu0_lkQRlOuEvg0zV6rqJpvc1Ysr_JnG1gJKGw8nZ4fLZo8dmFFCsJWrpUkTri1zDohKSrIk7PnyulS3hR2GL-z1bTmLRKZCOIqa25WatW4wbXhwi-2y86DGalsPeEkEkB7vsulAFzpBJXJaZscgEsSEmqcerFIoq2b-Gl_5w2yVwcGNbS2d3-1bVtzlvtXiqqElX8dke1kFoKW3HiZM3cA-BlRCWpR5UkH9lqX1v-nuUNV6Hwp2sGZABwmZNtouigeQyFg0cqE3');
 })
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
@@ -554,8 +554,9 @@ gameoverState = {
     arrayLength = data.tracks.items.length;
     for (i = 0; i < arrayLength; i++) {
       //track = data.tracks.items[i];
-      resultDiv.innerHTML = resultDiv.innerHTML + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[0].url + '"><div class="musicinfo">' + data.tracks.items[i].track.artists[0].name + ' - ' + data.tracks.items[i].track.name + '</div>';
+      resultDiv.innerHTML = resultDiv.innerHTML + '<a class="item item-thumbnail-left" href="#">' + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[0].url + '"><h2 class="musicinfo">' + data.tracks.items[i].track.artists[0].name + '</h2>' + '<p>' + data.tracks.items[i].track.name + '</p>' + '</a>';
     }
+    
   });
 
 
