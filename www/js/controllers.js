@@ -1,4 +1,12 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['spotify'])
+
+.config(function (SpotifyProvider) {
+  SpotifyProvider.setClientId('42a1039c04f64175b5fd5e6018d0eff3');
+  SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
+  SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
+  // If you already have an auth token
+  SpotifyProvider.setAuthToken('BQCifH7DgQB6tiS5H2Umw_oVHe44gcuXzx71TA7KcUR2Ir9uHw8LI-irPK-V66gGqTb3xIR5RoWZRR9D3uvQiUNAICiI6-9xvpdyGvMw-D4o14gxuu2lQiebouppOwt1eiNAYzlB8Kv4VzTM5rq5gr0PJOpW-8sLLA8eWkO3VPglr9_-4_B5eNtlHvp0HqhU-iVk7NCLhVkuKGpGO-_KaHA0eTirp23H_quhVfFtwH_GQErg-L3M2ug2Irb4U6UodYqP9jUd0Hh78PF0lvPKND3ubcIiR-Te4X4AMeQzgmbt8k2x');
+})
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
 
@@ -81,7 +89,7 @@ $scope.addArmScore = function() {
 })
 
 .controller('MainCtrl', function($scope, $state, $timeout) {
-  console.log('MainCtrl');
+  //console.log('MainCtrl');
   
   $scope.toIntro = function(){
     $state.go('intro');
@@ -110,14 +118,15 @@ $scope.addArmScore = function() {
 })
 
 
+
 .controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher, $rootScope) {
 
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
-  /*var macAddress = "20:13:07:18:02:77";
-    
+  
+  var macAddress = "20:13:07:18:02:77";
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-*/
+
   $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
@@ -167,7 +176,7 @@ $scope.addArmScore = function() {
 
   },
   create:function() {
-    game.state.start("boot");
+    game.state.start("play");
     playState.score = 0;
     playState.health = 3;
 
@@ -193,12 +202,15 @@ $scope.addArmScore = function() {
     this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'health');
 
     var circlePositionY = 400;
+    this.circleposition2 = 800;
     //this.level = 1;
     this.circle = game.add.sprite(50, circlePositionY, 'circle');
     this.circle.anchor.set(0.5);
     this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
       
     this.scoreText = this.game.add.text(20, 60, "");
+    this.moving = 0;
+    movingArduino = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
     this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
@@ -219,7 +231,7 @@ $scope.addArmScore = function() {
       {
 
         this.sfx_game.pause();
-        game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
+        game.time.events.add(Phaser.Timer.SECOND * 10000, gameOver, this);
 
       }
   },
@@ -236,31 +248,23 @@ $scope.addArmScore = function() {
       }*/
   },
 
-
-
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    /*bluetoothSerial.readUntil('\n', function (data) {
-      var movingArduino = data;
+    bluetoothSerial.readUntil('\n', function (data) {
+      movingArduino = data;
       movingArduino = parseInt(movingArduino);
-      if (movingArduino == 1) 
-      {
-        this.moving = true;
-      } else {
-        this.moving = false;
-      }
-      resultDiv.innerHTML = "movingArduino ist: " + movingArduino + "<br/> und moving ist: " + this.moving;
-    }); 
-    this.scoreText.setText("Score: " + this.score);
-    if (this.moving == false)
+      resultDiv.innerHTML = "movingArduino ist: " + movingArduino;
+    });
+    this.moving = movingArduino; 
+    if (this.moving == 1)
     {   
-        this.circle.y = 400;
-    }
-    else if (this.moving == true)
-    {
+        if (this.circle.y == 200) {
+          this.circle.y = 400;
+        }
+    } else {
         this.circle.y = 200;
-    }*/
+    }
     
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
@@ -273,8 +277,6 @@ $scope.addArmScore = function() {
         //this.sfx_game.pause();
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
-
-    
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
   }
 
@@ -303,7 +305,7 @@ bootState = {
 //THE MENU STATE
 menuState = {
   create:function() {
-    console.log("gestartet");
+    //console.log("gestartet");
     game.stage.backgroundColor = '#4bd1db';
     
     text = this.game.add.text(0, 0, "Well done!\nTime to switch hands…", textStyle);
@@ -441,12 +443,12 @@ gameoverState = {
     playState.level = 2;
     //playState.this.sfx_game.destroy();
     game.state.start("gameover");
-    console.log("game over wurde ausgeführt");
+    //console.log("game over wurde ausgeführt");
   }
 
   gamePause = function() {
   this.sfx_game.pause();
-  console.log("wurde ausgeführt");
+  //console.log("wurde ausgeführt");
 }
 
   //for adding enemies and stuff
@@ -487,7 +489,7 @@ gameoverState = {
 
   missEnemy = function(ring) {
       ring.destroy();
-      console.log("Miss");
+      //console.log("Miss");
       this.score = this.score -500;
       this.health = this.health-1;
       if (this.health === 2) {
@@ -534,34 +536,50 @@ gameoverState = {
  
 })
 
-.controller('SettingsCtrl', function($scope, $interval) {
+.controller('SettingsCtrl', function($scope) {
 
-/*
-  var macAddress = "20:13:07:18:02:77";
-    
-  $scope.connectBlue = function() {
-     bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-   };
-
-  $scope.disconnectBlue = function() {
-     bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
-    };
-  */
-  /*  setInterval(function() {
-      resultDiv.innerHTML = "";
-      bluetoothSerial.clear;
-      bluetoothSerial.readUntil('\n', function (data) {
-      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
-    }); 
-    }, 250);
-*/
-  /*$scope.readingData = function() {
-    bluetoothSerial.read(function (data) {
-      resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + data + "<br/>";
-      resultDiv.scrollTop = resultDiv.scrollHeight;
-    }); 
+  $scope.blue = function() {
+    bluetoothSerial.isConnected(
+      function() {
+          console.log("Bluetooth is connected");
+          $scope.disconnectBlue = function() {
+            bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
+          };
+      },
+      function() {
+          var macAddress = "20:13:07:18:02:77";
+          $scope.connectBlue = function() {
+            bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+          };
+      }
+    );
   };
 
-  $interval(, 1000);*/
+  var macAddress = "20:13:07:18:02:77";
+    
+ /* $scope.connectBlue = function() {
+     bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+   };
+  $scope.disconnectBlue = function() {
+     bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
+    };*/
   
+})
+
+.controller('SpotifyCtrl', function($scope, Spotify) {
+  //access token 
+  Spotify
+  .getPlaylist('bastibastek', '25PAIlZRfztr8P43kEdbEZ')
+  .then(function (data) {
+    console.log(data);
+
+    arrayLength = data.tracks.items.length;
+    for (i = 0; i < arrayLength; i++) {
+      //track = data.tracks.items[i];
+      resultDiv.innerHTML = resultDiv.innerHTML + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[0].url + '"><div class="musicinfo">' + data.tracks.items[i].track.artists[0].name + ' - ' + data.tracks.items[i].track.name + '</div>';
+    }
+  });
+
+
 });
+
