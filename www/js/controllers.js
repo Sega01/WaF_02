@@ -124,9 +124,9 @@ $scope.addArmScore = function() {
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
   
-  var macAddress = "20:13:07:18:02:77";
+  /*var macAddress = "20:13:07:18:02:77";
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-
+  */
   $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
@@ -239,19 +239,12 @@ $scope.addArmScore = function() {
   render:function() {
       game.debug.geom(line1, '#4bd1db');
       game.debug.geom(line2, '#4bd1db');
-
-      /*game.debug.soundInfo(this.sfx_game, 32, 200);
-
-      if (this.sfx_game.isDecoding)
-      {
-          game.debug.text("Decoding MP3 ...", 32, 400);
-      }*/
   },
 
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    bluetoothSerial.readUntil('\n', function (data) {
+    /*bluetoothSerial.readUntil('\n', function (data) {
       movingArduino = data;
       movingArduino = parseInt(movingArduino);
       resultDiv.innerHTML = "movingArduino ist: " + movingArduino;
@@ -264,7 +257,7 @@ $scope.addArmScore = function() {
         }
     } else {
         this.circle.y = 200;
-    }
+    }*/
     
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
@@ -305,7 +298,7 @@ bootState = {
 //THE MENU STATE
 menuState = {
   create:function() {
-    //console.log("gestartet");
+    console.log("Menü gestartet");
     game.stage.backgroundColor = '#4bd1db';
     
     text = this.game.add.text(0, 0, "Well done!\nTime to switch hands…", textStyle);
@@ -390,6 +383,7 @@ gameoverState = {
     textButtonReturn.setTextBounds(0,  window.innerHeight-147, window.innerWidth,0);
 
     playState.sfx_cheer.play();
+    console.log('GameOver wurde ausgeführt');
     
   },
 
@@ -421,27 +415,21 @@ gameoverState = {
     $rootScope.scoreArms = getScoreArms + 1;
     console.log("Neuer Wert:"+$rootScope.scoreArms);
   }
-/*
-  $scope.$watch('scoreArms', function(newVal) {
 
-     $scope.scoreArms = $scope.scoreArms + 1;
-
-    }, true);
-*/
   //play button
   resumeGame = function() {
-
     game.state.start("play");
     //this.sfx_game.resume();
   },
 
   switchHands = function() {
+    console.log('Switch-Handsfunktin wurde aufgerufen');
     playState.level = 1;
     game.state.start("menu");
   }
   gameOver = function() {
     playState.level = 2;
-    //playState.this.sfx_game.destroy();
+    console.log('GameOver-Funktion wurde aufgerufen');
     game.state.start("gameover");
     //console.log("game over wurde ausgeführt");
   }
