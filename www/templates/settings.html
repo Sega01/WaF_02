@@ -5,21 +5,35 @@
       Type your MAC adress:
     </div>
     <div class="item" id="macResetDiv">  
-      <input class="macadress" ng-model="mac1" name="mac11" min="1" max="99" placeholder="20" type="number"> : 
-      <input class="macadress" ng-model="mac2" name="mac21" min="1" max="99" placeholder="13"  type="number"> : 
-      <input class="macadress" ng-model="mac3" name="mac31" min="1" max="99" placeholder="07"  type="number"> : 
-      <input class="macadress" ng-model="mac4" name="mac41" min="1" max="99" placeholder="18"  type="number"> : 
-      <input class="macadress" ng-model="mac5" name="mac51" min="1" max="99" placeholder="02"  type="number"> : 
-      <input class="macadress" ng-model="mac6" name="mac61" min="1" max="99" placeholder="77"  type="number">
-      <button ng-click="setAdress(mac1, mac2, mac3, mac4, mac5, mac6)">Set</button>
-      <button ng-click="testMac()">Test</button>
+      <tr><table cellpadding="0" cellspacing="0">
+        <td><input class="macadress" ng-model="mac1" name="mac11" min="1" max="99" placeholder="20" type="number"></td>
+        <td>:</td>
+        <td><input class="macadress" ng-model="mac2" name="mac21" min="1" max="99" placeholder="13"  type="number"></td>
+        <td>:</td>
+        <td><input class="macadress" ng-model="mac3" name="mac31" min="1" max="99" placeholder="07"  type="number"></td>
+        <td>:</td>
+        <td><input class="macadress" ng-model="mac4" name="mac41" min="1" max="99" placeholder="18"  type="number"></td>
+        <td>:</td>
+        <td><input class="macadress" ng-model="mac5" name="mac51" min="1" max="99" placeholder="02"  type="number"></td>
+        <td>:</td>
+        <td><input class="macadress" ng-model="mac6" name="mac61" min="1" max="99" placeholder="77"  type="number"></td>
+      
+      </tr>
+    </table>
+      <br />
+      <br />
+      <button class="small" ng-click="setAdress(mac1, mac2, mac3, mac4, mac5, mac6)">Set</button>
+      <button class="small" ng-click="testMac()">Test</button>
       <div id="macAddresDiv"></div>
     </div>  
     <div class="item item-divider">
       Body Reset
     </div>  
-    <div class="item">   
-      <button ng-click="resetBody()">Reset the body</button>
+    <div class="item-nowrap">
+    <p>Press the button below in order to reset your avatar's progress.</p><br />
+    <span class="caution">Caution: Resitting the progress is irreversible!</span>
+    <br />  
+      <button class="large" ng-click="resetBody()">Reset the body</button>
       <div id="resetBodyDiv"></div>
     </div>
 </div>

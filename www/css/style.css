@@ -26,6 +26,8 @@ a {
   text-decoration: none;
 }
 
+
+
 .item-nowrap {
     border-color: #ddd;
     background-color: #fff;
@@ -106,29 +108,54 @@ color: #4bd1db;
 
 /**  Settings  */
 
-#status {
-  color: white;
-}
-
-#status-red {
-  color: red;
-}
-
-#status-green {
-  color: green;
-}
-
 #resetBodyDiv {
   display:inline;
   float:right;
 }
 
 #macResetDiv {
-  height:100px;
+  /*height:100px;*/
 }
 
 #macAddresDiv {
   padding-top:10px;
+}
+
+table {
+  width: 100%;
+}
+td {
+  text-align: center;
+}
+
+button.small {
+    background-color: #4bd1db;
+    color: #ffffff;
+    border: none;
+    padding: 8px 40px;
+    border-radius: 4px;
+    width: 50%;
+}
+
+button.large {
+    background-color: #4bd1db;
+    color: #ffffff;
+    border: none;
+    padding: 8px 40px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+input {
+  display: inline !important;
+  text-align: center !important;
+  border: 2px solid #f5f5f5 !important;
+  border-radius: 4px !important;
+}
+
+.caution {
+  color: #e31f68 !important;
+  display: block;
 }
 
 
