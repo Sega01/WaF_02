@@ -1,12 +1,24 @@
 angular.module('starter.controllers', [])
 
-.controller('StartCtrl', function($scope, $timeout) {
-  
-  
-timerArms = 0;
-timerTorso = 0;
-timerLegs = 0;
+.controller('StartCtrl', function($scope, $timeout, $rootScope) {
 
+  /* SERVICE VARIANTE 
+  $scope.scoreArms = Avatar.getScoreArms();
+  $scope.scoreTorso = 0;
+  $scope.scoreLegs = 0; 
+  */
+  var scoreArms = 0;
+  $rootScope.scoreArms = scoreArms;
+
+  console.log("Wert:" + $rootScope.scoreArms);
+  //$rootScope.testconsole.log("Wert:" + Avatar.getScoreArms); 
+
+  timerArms = 0;
+  timerTorso = 0;
+  timerLegs = 0;
+
+
+//console.log($scope.scoreArms); 
 $scope.updateArms = function(){
   if (timerArms == 1){
     return true;
@@ -30,6 +42,24 @@ $scope.updateLegs = function(){
     return false;
   }
 }
+
+/*$scope.updateAvatar = function(value){
+  if (scoreArms == 0){
+    source = "img/char_000.svg";
+  } 
+  else if (scoreArms == 1){
+    source = "img/char_100.svg";
+  }
+  else if (scoreArms == 2){
+    source = "img/char_200.svg";
+  }
+  else if (scoreArms == 3){
+    source = "img/char_300.svg";
+  }
+  else if (scoreArms == 4){
+    source = "img/char_400.svg";
+  }
+}*/
  
 $timeout(function() {
   timerArms = 1;
@@ -41,6 +71,12 @@ $timeout(function() {
 $timeout(function() {
        timerLegs = 1;
     }, 15000)*/
+
+
+$scope.addArmScore = function() {
+  console.log("Neuer ArmScore:" + scoreArms);
+  scoreArms = scoreArms + 1;
+}
 
 })
 
@@ -71,33 +107,13 @@ $timeout(function() {
     $scope.slideIndex = index;
   };
 
-
-  // Wizard abbrechen
-  $ionicModal.fromTemplateUrl('templates/cancel.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  $scope.closeCancellation = function() {
-    $scope.modal.hide();
-  };
-
-  $scope.cancelWizzard = function() {
-    $scope.modal.show();
-  };
-
-  $scope.backHome = function(){
-    $state.go('app.rezepte');
-    $scope.modal.hide();
-  };
-
 })
 
 
-.controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
+.controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher, $rootScope) {
 
-
+  var getScoreArms = $rootScope.scoreArms;
+  console.log("Wert im Game-Controller:" + getScoreArms);
   /*var macAddress = "20:13:07:18:02:77";
     
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
@@ -340,7 +356,6 @@ failState = {
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
-    timerArms = 0;
     $ionicViewSwitcher.nextDirection('back');
     $state.go('app.start');
   },
@@ -380,17 +395,37 @@ gameoverState = {
       
   },
 
+
   returnBtn:function() {
     game.destroy();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
     timerArms = 0;
+     //$scope.updateArmScore();
+    $scope.updateArmScore();
     $ionicViewSwitcher.nextDirection('back');
     $state.go('app.start');
+    //$main.addArmScore();
+    
+    
   },
   
 };
+  
+  $scope.updateArmScore = function(setScoreArms) {
+    //Avatar.scoreArms = $scope.scoreArms + 1;
+    //Avatar.setScoreArms(setScoreArms);
+    $rootScope.scoreArms = getScoreArms + 1;
+    console.log("Neuer Wert:"+$rootScope.scoreArms);
+  }
+/*
+  $scope.$watch('scoreArms', function(newVal) {
+
+     $scope.scoreArms = $scope.scoreArms + 1;
+
+    }, true);
+*/
   //play button
   resumeGame = function() {
 

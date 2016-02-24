@@ -1,16 +1,18 @@
 <ion-view view-title="Start">
   <ion-content>
-    <img class="avatar" src="img/char.svg" />
-    <div ng-show="updateArms()">
+   	<img class="avatar" src="img/char_000.svg" ng-if="scoreArms == 0" />
+   	<img class="avatar" src="img/char_100.svg" ng-if="scoreArms == 1" />
+    <div class="debug"></div>
+    <div ng-if="updateArms()">
     	<div><img class="attention tada animated" src="img/attention.png" /></div>
     	<a href="#/app/intro" class="muscles_urge arms" ng-show="updateArms()"><img  class="bounceIn animated" src="img/muscles_arms.svg" /></a>
 	</div>
-	<div ng-show="updateTorso()">
+	<div ng-if="updateTorso()">
    		<div><img class="attention tada animated" src="img/attention.png" /></div>
    		<div href="#/app/intro" class="muscles_urge torso disabled"><img  class="bounceIn animated" src="img/muscles_torso.svg" />
    		</div>
 	</div>
-	<div ng-show="updateLegs()">
+	<div ng-if="updateLegs()">
     	<div><img class="attention tada animated" src="img/attention.png" /></div>
     	<div class="muscles_urge legs disabled"><img  class="bounceIn animated" src="img/muscles_legs.svg" /></div>
 	</div>
