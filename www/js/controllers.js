@@ -168,6 +168,7 @@ $scope.addArmScore = function() {
       game.load.image('fail_slim', "img/fail.png");
       game.load.image('muscleGrowth1', "img/muscle_growth_1.png");
       game.load.image('button', "img/button.png");
+      game.load.image('close', "img/close.png");
 
       game.load.audio('sfx_hit', 'audio/hit.mp3');
       game.load.audio('sfx_miss', 'audio/miss.mp3');
@@ -209,7 +210,7 @@ $scope.addArmScore = function() {
     this.circle.anchor.set(0.5);
     this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
       
-    this.scoreText = this.game.add.text(20, 60, "");
+    this.ButtonReturn = this.game.add.button(20, 40, "close", this.returnBtn);
     this.moving = 0;
     movingArduino = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
@@ -271,9 +272,18 @@ $scope.addArmScore = function() {
     }
     game.time.events.add(Phaser.Timer.SECOND * 25, gamePause, this);
     game.physics.arcade.overlap(this.circle, this.rings, hitEnemy, null, this);
+  },
+  returnBtn:function() {
+    game.destroy();
+    $ionicHistory.nextViewOptions({
+    disableBack: true
+    });
+    $ionicViewSwitcher.nextDirection('back');
+    $state.go('app.start');
   }
 
 };
+
 
 
 bootState = {
@@ -327,7 +337,6 @@ failState = {
 
     this.fail = game.add.sprite(150, window.innerHeight-800, 'fail_slim');
     playState.sfx_exhausted.play();
-
     this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-117, "button", this.retryGame);
     this.ButtonReturn.anchor.set(0.5);
     textButtonReturn = this.game.add.text(20, 80, "Retry", buttonText);

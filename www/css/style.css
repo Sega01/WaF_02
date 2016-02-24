@@ -147,10 +147,13 @@ button.large {
 }
 
 input {
-  display: inline !important;
+  display: inline-block !important;
   text-align: center !important;
   border: 2px solid #f5f5f5 !important;
   border-radius: 4px !important;
+  width:44px !important;
+  box-sizing: border-box !important;
+  padding-left: 10px !important; 
 }
 
 .caution {
@@ -366,6 +369,13 @@ ion-content h1.title {
   opacity: 0.5;
 }
 
+.game-exit {
+  color:#4bd1db;
+  font-size:32px;
+  position: absolute;
+  top: 40px;
+  left: 20px;
+}
 
 
 /*### Avatar ###*/
