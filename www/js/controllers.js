@@ -532,14 +532,17 @@ gameoverState = {
     tempMacAddress = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
     macAddress = tempMacAddress;
     $rootScope.macAdress = tempMacAddress;
+
   };
   
   $scope.testMac = function() {
+    macAddresDiv.innerHTML = "Your new MAC address is: " + macAddress;
     console.log(macAddress);
   };
 
   $scope.resetBody = function() {
     $rootScope.scoreArms = 0;
+    resetBodyDiv.innerHTML = "You are a leek again"
   }
   
 })

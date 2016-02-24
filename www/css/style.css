@@ -118,6 +118,19 @@ color: #4bd1db;
   color: green;
 }
 
+#resetBodyDiv {
+  display:inline;
+  float:right;
+}
+
+#macResetDiv {
+  height:100px;
+}
+
+#macAddresDiv {
+  padding-top:10px;
+}
+
 
 /* ### Avatar ### */
 .avatar {

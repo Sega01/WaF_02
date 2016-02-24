@@ -1,14 +1,27 @@
 <ion-view view-title="Settings">
   <ion-content>
-  <p>Type your MAC adress:</p>
-  <input class="macadress" ng-model="mac1" name="mac11" min="1" max="99" placeholder="20" type="number"> : 
-  <input class="macadress" ng-model="mac2" name="mac21" min="1" max="99" placeholder="13"  type="number"> : 
-  <input class="macadress" ng-model="mac3" name="mac31" min="1" max="99" placeholder="07"  type="number"> : 
-  <input class="macadress" ng-model="mac4" name="mac41" min="1" max="99" placeholder="18"  type="number"> : 
-  <input class="macadress" ng-model="mac5" name="mac51" min="1" max="99" placeholder="02"  type="number"> : 
-  <input class="macadress" ng-model="mac6" name="mac61" min="1" max="99" placeholder="77"  type="number">
-  <button ng-click="setAdress(mac1, mac2, mac3, mac4, mac5, mac6)">Set</button>
-  <button ng-click="testMac()">Test</button>
-  <button ng-click="resetBody()">Reset the body</button>
+  <div class="list">
+    <div class="item item-divider">
+      Type your MAC adress:
+    </div>
+    <div class="item" id="macResetDiv">  
+      <input class="macadress" ng-model="mac1" name="mac11" min="1" max="99" placeholder="20" type="number"> : 
+      <input class="macadress" ng-model="mac2" name="mac21" min="1" max="99" placeholder="13"  type="number"> : 
+      <input class="macadress" ng-model="mac3" name="mac31" min="1" max="99" placeholder="07"  type="number"> : 
+      <input class="macadress" ng-model="mac4" name="mac41" min="1" max="99" placeholder="18"  type="number"> : 
+      <input class="macadress" ng-model="mac5" name="mac51" min="1" max="99" placeholder="02"  type="number"> : 
+      <input class="macadress" ng-model="mac6" name="mac61" min="1" max="99" placeholder="77"  type="number">
+      <button ng-click="setAdress(mac1, mac2, mac3, mac4, mac5, mac6)">Set</button>
+      <button ng-click="testMac()">Test</button>
+      <div id="macAddresDiv"></div>
+    </div>  
+    <div class="item item-divider">
+      Body Reset
+    </div>  
+    <div class="item">   
+      <button ng-click="resetBody()">Reset the body</button>
+      <div id="resetBodyDiv"></div>
+    </div>
+</div>
   </ion-content>
 </ion-view>
