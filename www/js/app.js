@@ -62,6 +62,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('app.spotify', {
+    url: '/spotify',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/spotify.html',
+        controller: 'SpotifyCtrl'
+      }
+    }
+  })
 
     .state('app.settings', {
       url: '/settings',

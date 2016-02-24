@@ -1,4 +1,12 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['spotify'])
+
+.config(function (SpotifyProvider) {
+  SpotifyProvider.setClientId('42a1039c04f64175b5fd5e6018d0eff3');
+  SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
+  SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
+  // If you already have an auth token
+  SpotifyProvider.setAuthToken('BQCifH7DgQB6tiS5H2Umw_oVHe44gcuXzx71TA7KcUR2Ir9uHw8LI-irPK-V66gGqTb3xIR5RoWZRR9D3uvQiUNAICiI6-9xvpdyGvMw-D4o14gxuu2lQiebouppOwt1eiNAYzlB8Kv4VzTM5rq5gr0PJOpW-8sLLA8eWkO3VPglr9_-4_B5eNtlHvp0HqhU-iVk7NCLhVkuKGpGO-_KaHA0eTirp23H_quhVfFtwH_GQErg-L3M2ug2Irb4U6UodYqP9jUd0Hh78PF0lvPKND3ubcIiR-Te4X4AMeQzgmbt8k2x');
+})
 
 .controller('StartCtrl', function($scope, $timeout) {
   
@@ -97,15 +105,10 @@ $timeout(function() {
 
 .controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher) {
 
-<<<<<<< Updated upstream
-
-  /*var macAddress = "20:13:07:18:02:77";
-=======
   var macAddress = "20:13:07:18:02:77";
->>>>>>> Stashed changes
     
   bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-*/
+
   $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
@@ -496,17 +499,50 @@ gameoverState = {
  
 })
 
-.controller('SettingsCtrl', function($scope, $interval) {
+.controller('SettingsCtrl', function($scope) {
 
-/*
+  $scope.blue = function() {
+    bluetoothSerial.isConnected(
+      function() {
+          console.log("Bluetooth is connected");
+          $scope.disconnectBlue = function() {
+            bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
+          };
+      },
+      function() {
+          var macAddress = "20:13:07:18:02:77";
+          $scope.connectBlue = function() {
+            bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+          };
+      }
+    );
+  };
+
   var macAddress = "20:13:07:18:02:77";
     
-  $scope.connectBlue = function() {
+ /* $scope.connectBlue = function() {
      bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
    };
   $scope.disconnectBlue = function() {
      bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
-    };
-  */
+    };*/
   
+})
+
+.controller('SpotifyCtrl', function($scope, Spotify) {
+  //access token 
+  Spotify
+  .getPlaylist('bastibastek', '25PAIlZRfztr8P43kEdbEZ')
+  .then(function (data) {
+    console.log(data);
+
+    arrayLength = data.tracks.items.length;
+    for (i = 0; i < arrayLength; i++) {
+      //track = data.tracks.items[i];
+      resultDiv.innerHTML = resultDiv.innerHTML + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[0].url + '"><div class="musicinfo">' + data.tracks.items[i].track.artists[0].name + ' - ' + data.tracks.items[i].track.name + '</div>';
+    }
+  });
+
+
 });
+

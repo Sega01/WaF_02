@@ -255,6 +255,26 @@ color: #4bd1db;
 	font-size: 26px;
 }
 
+/*### Music ### */
+.albumimg {
+  width: 100%;
+  margin:0px;
+  padding:0px;
+}
+
+#musictext {
+  margin-top:0px;
+}
+
+.musicinfo {
+  width: 100%;
+  background-color: #4bd1db;
+  color: #fff;
+  text-align: center;
+  height:25px;
+  margin-top:-3px;
+}
+
 /*### Game ### */
 
 #game {
