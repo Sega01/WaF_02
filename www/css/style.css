@@ -87,16 +87,10 @@ color: #4bd1db;
 
 /**  Settings  */
 
-#status {
-	color: white;
-}
+.macadress {
+  width:30px;
+  display: inline!important;
 
-#status-red {
-	color: red;
-}
-
-#status-green {
-	color: green;
 }
 
 

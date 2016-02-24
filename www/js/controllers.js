@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['spotify'])
   SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
   SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
   // If you already have an auth token
-  SpotifyProvider.setAuthToken('BQCifH7DgQB6tiS5H2Umw_oVHe44gcuXzx71TA7KcUR2Ir9uHw8LI-irPK-V66gGqTb3xIR5RoWZRR9D3uvQiUNAICiI6-9xvpdyGvMw-D4o14gxuu2lQiebouppOwt1eiNAYzlB8Kv4VzTM5rq5gr0PJOpW-8sLLA8eWkO3VPglr9_-4_B5eNtlHvp0HqhU-iVk7NCLhVkuKGpGO-_KaHA0eTirp23H_quhVfFtwH_GQErg-L3M2ug2Irb4U6UodYqP9jUd0Hh78PF0lvPKND3ubcIiR-Te4X4AMeQzgmbt8k2x');
+  SpotifyProvider.setAuthToken('BQAga5II7lKJ6WZ3D89VbL_94MYJ7RkJqMGWHPM-mg0Wm3wNPSpciuioOjjBsaISZiBYe5PBaD_3KkvHXPXlrFM-R9zlrjX4HlvLaU9FKHht_ZEXQF_XePSNN0-ik3SOoyfnl-9TaDpPbKxZ4LDsQVJ3GGb-L82Jrb6GzK5bglHjlg5f4E8Wmf7vCByG3ss9_XygmnYun3CMa_1VvhJxKOhHUGe5-1rvGhAo0sDFb84-OMi8lsFS7C-DTH4kWhazidLcNJcckz6lD9HRydnGDcBTRAEobImBZnAqrIPWj35FLUOK');
 })
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
@@ -123,9 +123,10 @@ $scope.addArmScore = function() {
 
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
-  
-  /*var macAddress = "20:13:07:18:02:77";
-  bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+  var macAddress = $rootScope.macAdress;
+  console.log(macAddress);
+
+  /*bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
   */
   $scope.$on("$ionicView.beforeEnter", function() {
 
@@ -231,7 +232,7 @@ $scope.addArmScore = function() {
       {
 
         this.sfx_game.pause();
-        game.time.events.add(Phaser.Timer.SECOND * 10000, gameOver, this);
+        game.time.events.add(Phaser.Timer.SECOND * 10, gameOver, this);
 
       }
   },
@@ -247,7 +248,6 @@ $scope.addArmScore = function() {
     /*bluetoothSerial.readUntil('\n', function (data) {
       movingArduino = data;
       movingArduino = parseInt(movingArduino);
-      resultDiv.innerHTML = "movingArduino ist: " + movingArduino;
     });
     this.moving = movingArduino; 
     if (this.moving == 1)
@@ -524,33 +524,23 @@ gameoverState = {
  
 })
 
-.controller('SettingsCtrl', function($scope) {
+.controller('SettingsCtrl', function($scope, $rootScope) {
 
-  $scope.blue = function() {
-    bluetoothSerial.isConnected(
-      function() {
-          console.log("Bluetooth is connected");
-          $scope.disconnectBlue = function() {
-            bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
-          };
-      },
-      function() {
-          var macAddress = "20:13:07:18:02:77";
-          $scope.connectBlue = function() {
-            bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-          };
-      }
-    );
+  macAddress = "20:13:07:18:02:77";
+  
+  $scope.setAdress = function(mac1, mac2, mac3, mac4, mac5, mac6) {
+    tempMacAddress = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
+    macAddress = tempMacAddress;
+    $rootScope.macAdress = tempMacAddress;
+  };
+  
+  $scope.testMac = function() {
+    console.log(macAddress);
   };
 
-  var macAddress = "20:13:07:18:02:77";
-    
- /* $scope.connectBlue = function() {
-     bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-   };
-  $scope.disconnectBlue = function() {
-     bluetoothSerial.disconnect(alert("getrennt"), alert("trennung fehlgeschlagen"));
-    };*/
+  $scope.resetBody = function() {
+    $rootScope.scoreArms = 0;
+  }
   
 })
 
@@ -569,5 +559,12 @@ gameoverState = {
   });
 
 
+})
+
+.controller('ImpressumCtrl', function($scope, Spotify) {
+  
+
+
 });
+
 

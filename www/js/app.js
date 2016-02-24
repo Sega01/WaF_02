@@ -71,6 +71,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  .state('app.impressum', {
+    url: '/impressum',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/impressum.html',
+        controller: 'ImpressumCtrl'
+      }
+    }
+  })
 
     .state('app.settings', {
       url: '/settings',
