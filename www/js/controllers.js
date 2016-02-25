@@ -75,10 +75,10 @@ $timeout(function() {
 
 $timeout(function() {
        timerTorso = 1;
-    }, 10000)
+    }, 120000)
 $timeout(function() {
        timerLegs = 1;
-    }, 15000)
+    }, 180000)
 
 
 $scope.addArmScore = function() {
@@ -537,7 +537,7 @@ gameoverState = {
  
 })
 
-.controller('SettingsCtrl', function($scope, $rootScope) {
+.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup) {
 
   var macAddress = "20:13:07:18:02:77";
   
@@ -545,18 +545,34 @@ gameoverState = {
     tempMacAddress = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
     macAddress = tempMacAddress;
     $rootScope.macAdress = tempMacAddress;
-
+    $scope.testMac();
   };
   
-  $scope.testMac = function() {
+  /*$scope.testMac = function() {
     macAddresDiv.innerHTML = "Your new MAC address is: " + macAddress;
     console.log(macAddress);
-  };
+  };*/
 
   $scope.resetBody = function() {
     $rootScope.scoreArms = 0;
-    resetBodyDiv.innerHTML = "You are a leek again"
+    //resetBodyDiv.innerHTML = "You are a leek again"
+    $scope.showAlertReset();
   }
+
+  $scope.testMac = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Done!',
+       template: 'Your new MAC address is: ' + macAddress
+     });
+   };
+
+  $scope.showAlertReset = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Done!',
+       template: 'Wutz is back to normal!'
+     });
+   };
+
   
 })
 

@@ -109,8 +109,7 @@ color: #4bd1db;
 /**  Settings  */
 
 #resetBodyDiv {
-  display:inline;
-  float:right;
+  margin-top: 20px;
 }
 
 #macResetDiv {
@@ -160,6 +159,18 @@ input {
   color: #e31f68 !important;
   display: block;
 }
+.popup-container .popup {
+  border-radius: 4px;
+  font-family: 'Titillium Regular', Helvetica, sans-serif;
+  text-align: center;
+}
+.popup-buttons button {
+    margin-right: 0px;
+    border-radius: 4px;
+    background-color: #4bd1db !important;
+    font-family: 'Titillium Regular', Helvetica, sans-serif;
+}
+
 
 
 /* ### Avatar ### */
