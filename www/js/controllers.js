@@ -128,7 +128,7 @@ $scope.addArmScore = function() {
   
   var macAddress = window.localStorage['macAdress'] || "20:13:07:18:02:77";
   console.log(macAddress);
-  //bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+  bluetoothSerial.connect(macAddress, console.log("verbunden"), console.log("verbindung fehlgeschlagen"));
   
   $scope.$on("$ionicView.beforeEnter", function() {
 
@@ -215,6 +215,7 @@ $scope.addArmScore = function() {
     this.ButtonReturn = this.game.add.button(20, 20, "close", this.returnBtn);
     this.moving = 0;
     movingArduino = 0;
+    counter = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
     this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
@@ -248,21 +249,28 @@ $scope.addArmScore = function() {
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    /*
+    
     bluetoothSerial.readUntil('\n', function (data) {
       movingArduino = data;
       movingArduino = parseInt(movingArduino);
+      console.log(movingArduino);
     });
     this.moving = movingArduino; 
-    if (this.moving == 1)
-    {   
-        if (this.circle.y == 200) {
-          this.circle.y = 400;
-        }
-    } else {
-        this.circle.y = 200;
+    if (counter > 50)
+    {
+      counter = 0;
+      if (this.moving == 1)
+      {   
+          if (this.circle.y == 200) {
+            this.circle.y = 400;
+          }
+      } else {
+          this.circle.y = 200;
+      }
     }
-    */
+    
+    counter++;
+
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
@@ -300,7 +308,7 @@ bootState = {
     text = this.game.add.text(0, 0, "The game is about to begin", textStyleSmall);
     text.setTextBounds(0, 100, window.innerWidth, 100);
 
-    this.success = game.add.sprite((game.world.width/2)-150, game.world.height-460, 'success_slim');
+    this.success = game.add.sprite((game.world.width/2)-245, window.innerHeight-480, 'success_slim');
 
     //10 bis Spielstart
     game.time.events.add(Phaser.Timer.SECOND * 10, resumeGame, this);
@@ -324,7 +332,7 @@ menuState = {
     text = this.game.add.text(0, 0, "Time to switch hands…", textStyleSmall);
     text.setTextBounds(0, 100, window.innerWidth, 100);
 
-    this.success = game.add.sprite((game.world.width/2)-150, game.world.height-460, 'success_slim');
+    this.success = game.add.sprite((game.world.width/2)-295, window.innerHeight-480, 'success_slim');
     playState.level = 1;
     //5 Sekunden Pause für Handwechsel
     game.time.events.add(Phaser.Timer.SECOND * 5, resumeGame, this);
@@ -346,7 +354,7 @@ failState = {
     textFailcontent = this.game.add.text(0, 0, "Your partner wore out \nTake a break and keep training!", textStyleSmall);
     textFailcontent.setTextBounds(0, 100, window.innerWidth, 100);
 
-    this.fail = game.add.sprite((game.world.width/2)-155, game.world.height-460, 'fail_slim');
+    this.fail = game.add.sprite((game.world.width/2)-245, window.innerHeight-480, 'fail_slim');
     playState.sfx_exhausted.play();
     this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-117, "button", this.retryGame);
     this.ButtonReturn.anchor.set(0.5);
@@ -399,7 +407,7 @@ gameoverState = {
     textSuccesscontent = this.game.add.text(0, 0, "Your partner's arm muscles\nhave grown by 10%.", textStyleSmall);
     textSuccesscontent.setTextBounds(0, 100, window.innerWidth, 100);
 
-    this.success = game.add.sprite((game.world.width/2)-198,  game.world.height-440, 'muscleGrowth1');
+    this.success = game.add.sprite((game.world.width/2)-295, window.innerHeight-480, 'muscleGrowth1');
 
     this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-47, "button", this.returnBtn);
     this.ButtonReturn.anchor.set(0.5);
