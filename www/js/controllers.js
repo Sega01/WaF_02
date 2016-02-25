@@ -4,22 +4,17 @@ angular.module('starter.controllers', ['spotify', 'LocalStorageModule'])
   SpotifyProvider.setClientId('42a1039c04f64175b5fd5e6018d0eff3');
   SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
   SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
-  // If you already have an auth token
+  // Token muss leider jede Stunde aktualisiert werden.  Mit dem Cordova OAuth haben wir es leider nicht hinbekomen
   SpotifyProvider.setAuthToken('BQCtszuq4qKA8IjTVnSvekdDvj_B2azkD08-86sMNX65eS2f5jiQkE0dpNYwVnrHElEC1y9tnKGbNpd-d-y37Gs1NPbRNcUXSyZG7AgMTKAhU8w172uo2ABPxxdIhm7fkkNHrUJKZEOCoRRL35f9MD_QZJ5ah9T26sCML-fcaDR0z_QPI_eK1YIkgXnMKB5LHNFuZgLaeQIyfzji-90QaiTYT50OB2WJ8Q_hTFTxALIwjrEZ6yw0LECff573o-gF9S3qjjcsGRxJS3duTGKCnm0Xgry0uD2vJAu6RF1cq-ejfvzb');
 })
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
 
-  /* SERVICE VARIANTE 
-  $scope.scoreArms = Avatar.getScoreArms();
-  $scope.scoreTorso = 0;
-  $scope.scoreLegs = 0; 
-  */
-  //var scoreArms = 0;
+  
+
   $rootScope.scoreArms = +window.localStorage['scoreArms'] || 0;
 
   console.log("Wert:" + $rootScope.scoreArms);
-  //$rootScope.testconsole.log("Wert:" + Avatar.getScoreArms); 
 
   timerArms = 0;
   timerTorso = 0;
@@ -51,23 +46,6 @@ $scope.updateLegs = function(){
   }
 }
 
-/*$scope.updateAvatar = function(value){
-  if (scoreArms == 0){
-    source = "img/char_000.svg";
-  } 
-  else if (scoreArms == 1){
-    source = "img/char_100.svg";
-  }
-  else if (scoreArms == 2){
-    source = "img/char_200.svg";
-  }
-  else if (scoreArms == 3){
-    source = "img/char_300.svg";
-  }
-  else if (scoreArms == 4){
-    source = "img/char_400.svg";
-  }
-}*/
  
 $timeout(function() {
   timerArms = 1;
@@ -221,11 +199,8 @@ $scope.addArmScore = function() {
     this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
     this.sfx_cheer = this.game.add.audio('sfx_cheer');
     this.sfx_game = this.game.add.audio('sfx_game',1,true);
-    
-      //this.sounds = [ this.sfx_hit, this.sfx_miss, this.sfx_game, this.sfx_cheer ];
-    //game.sound.setDecodedCallback(this.sounds, this);
 
-    
+
       if (this.level !== 1)
       {
         this.sfx_game.play();
@@ -343,10 +318,6 @@ failState = {
     this.ButtonReturn.anchor.set(0.5);
     textButtonReturn = this.game.add.text(20, 80, "Return to main menu", buttonText);
     textButtonReturn.setTextBounds(0,  window.innerHeight-147, window.innerWidth,0);
-
-
-
-    //playState.sfx_cheer.play();
     
   },
 
@@ -368,7 +339,6 @@ failState = {
     playState.sfx_game.destroy();
     playState.health = 3;
     game.state.start("boot");
-    //this.sfx_game.resume();
   },
   
 };
@@ -404,16 +374,16 @@ gameoverState = {
 
   returnBtn:function() {
     game.destroy();
-    //bluetoothSerial.disconnect();
+
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
     timerArms = 0;
-     //$scope.updateArmScore();
+
     $scope.updateArmScore();
     $ionicViewSwitcher.nextDirection('back');
     $state.go('app.start');
-    //$main.addArmScore();
+ 
     
     
   },
@@ -421,8 +391,6 @@ gameoverState = {
 };
   
   $scope.updateArmScore = function(setScoreArms) {
-    //Avatar.scoreArms = $scope.scoreArms + 1;
-    //Avatar.setScoreArms(setScoreArms);
     $rootScope.scoreArms = getScoreArms + 1;
     window.localStorage['scoreArms'] = $rootScope.scoreArms;
     console.log("Neuer Wert:"+$rootScope.scoreArms);
@@ -451,13 +419,12 @@ gameoverState = {
   //console.log("wurde ausgeführt");
 }
 
-  //for adding enemies and stuff
+ //Spawningfunktion für Ringe
   addMore = function() {
     var x;
     var y;
     var velX;
 
-    //decides which side the robots will spawn in
     if (Math.random() > 1/2 ) {
       x = playState.game.width - 10;
       y = 150;
@@ -468,7 +435,7 @@ gameoverState = {
       velX = -350;
     };
 
-    //rings
+    //Ringe
     var ring = playState.rings.create(x, y, "ring");
     playState.game.physics.enable(ring, Phaser.Physics.ARCADE);
       ring.body.velocity.x = velX;
@@ -497,7 +464,6 @@ gameoverState = {
       console.log(movingArduino);
     }
 
-  //when a player hits the enemies
 
   hitEnemy = function(circle, ring) {
     
@@ -509,17 +475,16 @@ gameoverState = {
   missEnemy = function(ring) {
       ring.destroy();
       //console.log("Miss");
-      this.score = this.score -500;
-      this.health = this.health-1;
-      if (this.health === 2) {
+      playState.health = playState.health-1;
+      if (playState.health === 2) {
         this.gfx_health3.kill();
         this.gfx_health3 = game.add.sprite(window.innerWidth-240, 20, 'healthLost');
       }
-      if (this.health === 1) {
+      if (playState.health === 1) {
         this.gfx_health2.kill();
         this.gfx_health2 = game.add.sprite(window.innerWidth-160, 20, 'healthLost');
       }
-      if (this.health === 0) {
+      if (playState.health === 0) {
         this.gfx_health1.kill();
         game.state.start("fail");
       }
