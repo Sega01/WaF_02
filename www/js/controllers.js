@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['spotify'])
   SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
   SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
   // If you already have an auth token
-  SpotifyProvider.setAuthToken('BQDRsHweiFx1zsA4v3xWG2wJZ1BZYxc4Pl1uPu0_lkQRlOuEvg0zV6rqJpvc1Ysr_JnG1gJKGw8nZ4fLZo8dmFFCsJWrpUkTri1zDohKSrIk7PnyulS3hR2GL-z1bTmLRKZCOIqa25WatW4wbXhwi-2y86DGalsPeEkEkB7vsulAFzpBJXJaZscgEsSEmqcerFIoq2b-Gl_5w2yVwcGNbS2d3-1bVtzlvtXiqqElX8dke1kFoKW3HiZM3cA-BlRCWpR5UkH9lqX1v-nuUNV6Hwp2sGZABwmZNtouigeQyFg0cqE3');
+  SpotifyProvider.setAuthToken('BQCtszuq4qKA8IjTVnSvekdDvj_B2azkD08-86sMNX65eS2f5jiQkE0dpNYwVnrHElEC1y9tnKGbNpd-d-y37Gs1NPbRNcUXSyZG7AgMTKAhU8w172uo2ABPxxdIhm7fkkNHrUJKZEOCoRRL35f9MD_QZJ5ah9T26sCML-fcaDR0z_QPI_eK1YIkgXnMKB5LHNFuZgLaeQIyfzji-90QaiTYT50OB2WJ8Q_hTFTxALIwjrEZ6yw0LECff573o-gF9S3qjjcsGRxJS3duTGKCnm0Xgry0uD2vJAu6RF1cq-ejfvzb');
 })
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
@@ -123,11 +123,11 @@ $scope.addArmScore = function() {
 
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
-  var macAddress = $rootScope.macAdress;
-  console.log(macAddress);
-
-  /*bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
-  */
+  //var macAddress = $rootScope.macAdress;
+  
+  //var macAddress = "20:13:07:18:02:77";
+  //bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
+  
   $scope.$on("$ionicView.beforeEnter", function() {
 
     loadState = {
@@ -246,7 +246,8 @@ $scope.addArmScore = function() {
   //updates the game
   update:function() {
     //bluetoothSerial.clear;
-    /*bluetoothSerial.readUntil('\n', function (data) {
+    /*
+    bluetoothSerial.readUntil('\n', function (data) {
       movingArduino = data;
       movingArduino = parseInt(movingArduino);
     });
@@ -258,8 +259,8 @@ $scope.addArmScore = function() {
         }
     } else {
         this.circle.y = 200;
-    }*/
-    
+    }
+    */
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
@@ -275,6 +276,7 @@ $scope.addArmScore = function() {
   },
   returnBtn:function() {
     game.destroy();
+    //bluetoothSerial.disconnect();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
@@ -357,6 +359,7 @@ failState = {
 
   returnBtn:function() {
     game.destroy();
+    //bluetoothSerial.disconnect();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
@@ -403,6 +406,7 @@ gameoverState = {
 
   returnBtn:function() {
     game.destroy();
+    //bluetoothSerial.disconnect();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
@@ -535,7 +539,7 @@ gameoverState = {
 
 .controller('SettingsCtrl', function($scope, $rootScope) {
 
-  macAddress = "20:13:07:18:02:77";
+  var macAddress = "20:13:07:18:02:77";
   
   $scope.setAdress = function(mac1, mac2, mac3, mac4, mac5, mac6) {
     tempMacAddress = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
@@ -566,7 +570,7 @@ gameoverState = {
     arrayLength = data.tracks.items.length;
     for (i = 0; i < arrayLength; i++) {
       //track = data.tracks.items[i];
-      resultDiv.innerHTML = resultDiv.innerHTML + '<a class="item item-thumbnail-left" href="#">' + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[0].url + '"><h2 class="musicinfo">' + data.tracks.items[i].track.artists[0].name + '</h2>' + '<p>' + data.tracks.items[i].track.name + '</p>' + '</a>';
+      resultDiv.innerHTML = resultDiv.innerHTML + '<a class="item item-thumbnail-left" href="#">' + '<img class="albumimg" src="' + data.tracks.items[i].track.album.images[1].url + '"><h2 class="musicinfo">' + data.tracks.items[i].track.artists[0].name + '</h2>' + '<p>' + data.tracks.items[i].track.name + '</p>' + '</a>';
     }
     
   });
