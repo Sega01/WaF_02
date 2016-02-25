@@ -16,7 +16,7 @@ angular.module('starter.controllers', ['spotify', 'LocalStorageModule'])
   $scope.scoreLegs = 0; 
   */
   //var scoreArms = 0;
-  $rootScope.scoreArms = window.localStorage['scoreArms'] || 0;
+  $rootScope.scoreArms = +window.localStorage['scoreArms'] || 0;
 
   console.log("Wert:" + $rootScope.scoreArms);
   //$rootScope.testconsole.log("Wert:" + Avatar.getScoreArms); 
@@ -200,7 +200,8 @@ $scope.addArmScore = function() {
 
     this.rings = this.game.add.group();
     //timer
-    this.timer = this.game.time.events.loop(750, addMore, this); 
+    this.timer = this.game.time.events.loop(750, addMore, this);
+    this.timerMoving = this.game.time.events.loop(1, ArduinoData, this);  
     this.gfx_health1 = game.add.sprite(window.innerWidth-80, 20, 'health');
     this.gfx_health2 = game.add.sprite(window.innerWidth-160, 20, 'health');
     this.gfx_health3 = game.add.sprite(window.innerWidth-240, 20, 'health');
@@ -215,7 +216,6 @@ $scope.addArmScore = function() {
     this.ButtonReturn = this.game.add.button(20, 20, "close", this.returnBtn);
     this.moving = 0;
     movingArduino = 0;
-    counter = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
     this.sfx_exhausted = this.game.add.audio('sfx_exhausted');
@@ -246,31 +246,9 @@ $scope.addArmScore = function() {
       game.debug.geom(line2, '#4bd1db');
   },
 
+
   //updates the game
   update:function() {
-    //bluetoothSerial.clear;
-    
-    bluetoothSerial.readUntil('\n', function (data) {
-      movingArduino = data;
-      movingArduino = parseInt(movingArduino);
-      console.log(movingArduino);
-    });
-    this.moving = movingArduino; 
-    if (counter > 50)
-    {
-      counter = 0;
-      if (this.moving == 1)
-      {   
-          if (this.circle.y == 200) {
-            this.circle.y = 400;
-          }
-      } else {
-          this.circle.y = 200;
-      }
-    }
-    
-    counter++;
-
     if (game.input.keyboard.isDown(Phaser.Keyboard.UP))
     {
         this.circle.y = 200;
@@ -499,6 +477,25 @@ gameoverState = {
       ring.checkWorldBounds = true;
       ring.events.onOutOfBounds.add(missEnemy, this);
   }
+
+  ArduinoData =function() {
+      bluetoothSerial.readUntil('\n', function (data) {
+      movingArduino = data;
+      movingArduino = parseInt(movingArduino);
+    });
+    this.moving = movingArduino;
+      if (this.moving == 1)
+      {   
+          if (this.circle.y == 200) 
+          {
+            this.circle.y = 400;
+          } else if (this.circle.y == 400)
+          {
+            this.circle.y = 200;
+          }
+      }
+      console.log(movingArduino);
+    }
 
   //when a player hits the enemies
 
