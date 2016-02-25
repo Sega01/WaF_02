@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['spotify'])
+angular.module('starter.controllers', ['spotify', 'LocalStorageModule'])
 
 .config(function (SpotifyProvider) {
   SpotifyProvider.setClientId('42a1039c04f64175b5fd5e6018d0eff3');
@@ -15,8 +15,8 @@ angular.module('starter.controllers', ['spotify'])
   $scope.scoreTorso = 0;
   $scope.scoreLegs = 0; 
   */
-  var scoreArms = 0;
-  $rootScope.scoreArms = scoreArms;
+  //var scoreArms = 0;
+  $rootScope.scoreArms = window.localStorage['scoreArms'] || 0;
 
   console.log("Wert:" + $rootScope.scoreArms);
   //$rootScope.testconsole.log("Wert:" + Avatar.getScoreArms); 
@@ -123,9 +123,11 @@ $scope.addArmScore = function() {
 
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
+  
   //var macAddress = $rootScope.macAdress;
   
-  //var macAddress = "20:13:07:18:02:77";
+  var macAddress = window.localStorage['macAdress'] || "20:13:07:18:02:77";
+  console.log(macAddress);
   //bluetoothSerial.connect(macAddress, alert("verbunden"), alert("verbindung fehlgeschlagen"));
   
   $scope.$on("$ionicView.beforeEnter", function() {
@@ -178,7 +180,7 @@ $scope.addArmScore = function() {
 
   },
   create:function() {
-    game.state.start("play");
+    game.state.start("boot");
     playState.score = 0;
     playState.health = 3;
 
@@ -426,6 +428,7 @@ gameoverState = {
     //Avatar.scoreArms = $scope.scoreArms + 1;
     //Avatar.setScoreArms(setScoreArms);
     $rootScope.scoreArms = getScoreArms + 1;
+    window.localStorage['scoreArms'] = $rootScope.scoreArms;
     console.log("Neuer Wert:"+$rootScope.scoreArms);
   }
 
@@ -537,7 +540,7 @@ gameoverState = {
  
 })
 
-.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup) {
+.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, localStorageService) {
 
   var macAddress = "20:13:07:18:02:77";
   
@@ -546,16 +549,18 @@ gameoverState = {
     macAddress = tempMacAddress;
     $rootScope.macAdress = tempMacAddress;
     $scope.testMac();
+    window.localStorage['macAddress'] = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
+    //function getItem(key) {
+      //return localStorageService.get(macAddress);
+    //};
+    //nocheineadresse = localStorageService.get(macAddress);
+    //console.log(nocheineadresse);
   };
-  
-  /*$scope.testMac = function() {
-    macAddresDiv.innerHTML = "Your new MAC address is: " + macAddress;
-    console.log(macAddress);
-  };*/
 
   $scope.resetBody = function() {
     $rootScope.scoreArms = 0;
     //resetBodyDiv.innerHTML = "You are a leek again"
+    window.localStorage['scoreArms'] = $rootScope.scoreArms;
     $scope.showAlertReset();
   }
 
