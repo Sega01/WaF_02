@@ -72,13 +72,13 @@ $scope.updateLegs = function(){
 $timeout(function() {
   timerArms = 1;
 }, 5000)
-/*
+
 $timeout(function() {
        timerTorso = 1;
     }, 10000)
 $timeout(function() {
        timerLegs = 1;
-    }, 15000)*/
+    }, 15000)
 
 
 $scope.addArmScore = function() {
