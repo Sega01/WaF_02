@@ -201,9 +201,9 @@ $scope.addArmScore = function() {
     this.rings = this.game.add.group();
     //timer
     this.timer = this.game.time.events.loop(750, addMore, this); 
-    this.gfx_health1 = game.add.sprite(window.innerWidth-80, 40, 'health');
-    this.gfx_health2 = game.add.sprite(window.innerWidth-160, 40, 'health');
-    this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'health');
+    this.gfx_health1 = game.add.sprite(window.innerWidth-80, 20, 'health');
+    this.gfx_health2 = game.add.sprite(window.innerWidth-160, 20, 'health');
+    this.gfx_health3 = game.add.sprite(window.innerWidth-240, 20, 'health');
 
     var circlePositionY = 400;
     this.circleposition2 = 800;
@@ -212,7 +212,7 @@ $scope.addArmScore = function() {
     this.circle.anchor.set(0.5);
     this.game.physics.enable(this.circle, Phaser.Physics.ARCADE);
       
-    this.ButtonReturn = this.game.add.button(20, 40, "close", this.returnBtn);
+    this.ButtonReturn = this.game.add.button(20, 20, "close", this.returnBtn);
     this.moving = 0;
     movingArduino = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
@@ -394,11 +394,12 @@ gameoverState = {
     game.stage.backgroundColor = '#4bd1db';
     
     textSuccessHeadline = this.game.add.text(0, 0, "Great!", textStyle);
+    textSuccessHeadline.setTextBounds(0, 20, window.innerWidth, 20);
+    
     textSuccesscontent = this.game.add.text(0, 0, "Your partner's arm muscles\nhave grown by 10%.", textStyleSmall);
-    textSuccessHeadline.setTextBounds(0, 50, window.innerWidth, 50);
-    textSuccesscontent.setTextBounds(0, 180, window.innerWidth, 50);
+    textSuccesscontent.setTextBounds(0, 100, window.innerWidth, 100);
 
-    this.success = game.add.sprite(30, window.innerHeight-800, 'muscleGrowth1');
+    this.success = game.add.sprite((game.world.width/2)-198,  game.world.height-440, 'muscleGrowth1');
 
     this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-47, "button", this.returnBtn);
     this.ButtonReturn.anchor.set(0.5);
@@ -507,11 +508,11 @@ gameoverState = {
       this.health = this.health-1;
       if (this.health === 2) {
         this.gfx_health3.kill();
-        this.gfx_health3 = game.add.sprite(window.innerWidth-240, 40, 'healthLost');
+        this.gfx_health3 = game.add.sprite(window.innerWidth-240, 20, 'healthLost');
       }
       if (this.health === 1) {
         this.gfx_health2.kill();
-        this.gfx_health2 = game.add.sprite(window.innerWidth-160, 40, 'healthLost');
+        this.gfx_health2 = game.add.sprite(window.innerWidth-160, 20, 'healthLost');
       }
       if (this.health === 0) {
         this.gfx_health1.kill();
