@@ -294,10 +294,13 @@ bootState = {
   create:function() {
     game.stage.backgroundColor = '#4bd1db';
     
-    text = this.game.add.text(0, 0, "Get Ready!\nThe game is about to begin", textStyle);
-    text.setTextBounds(0, 50, window.innerWidth, 50);
+    text = this.game.add.text(0, 0, "Get Ready!", textStyle);
+    text.setTextBounds(0, 20, window.innerWidth, 20);
 
-    this.success = game.add.sprite(150, window.innerHeight-800, 'success_slim');
+    text = this.game.add.text(0, 0, "The game is about to begin", textStyleSmall);
+    text.setTextBounds(0, 100, window.innerWidth, 100);
+
+    this.success = game.add.sprite((game.world.width/2)-150, game.world.height-460, 'success_slim');
 
     //10 bis Spielstart
     game.time.events.add(Phaser.Timer.SECOND * 10, resumeGame, this);
@@ -315,10 +318,13 @@ menuState = {
     console.log("Menü gestartet");
     game.stage.backgroundColor = '#4bd1db';
     
-    text = this.game.add.text(0, 0, "Well done!\nTime to switch hands…", textStyle);
-    text.setTextBounds(0, 50, window.innerWidth, 50);
+    text = this.game.add.text(0, 0, "Well done!", textStyle);
+    text.setTextBounds(0, 20, window.innerWidth, 20);
 
-    this.success = game.add.sprite(150, window.innerHeight-800, 'success_slim');
+    text = this.game.add.text(0, 0, "Time to switch hands…", textStyleSmall);
+    text.setTextBounds(0, 100, window.innerWidth, 100);
+
+    this.success = game.add.sprite((game.world.width/2)-150, game.world.height-460, 'success_slim');
     playState.level = 1;
     //5 Sekunden Pause für Handwechsel
     game.time.events.add(Phaser.Timer.SECOND * 5, resumeGame, this);
@@ -334,12 +340,13 @@ failState = {
   create:function() {
     game.stage.backgroundColor = '#4bd1db';
     
-    textSuccessHeadline = this.game.add.text(0, 0, "Too bad!", textStyle);
-    textSuccesscontent = this.game.add.text(0, 0, "Your partner wore out \nTake a break and keep training!", textStyleSmall);
-    textSuccessHeadline.setTextBounds(0, 50, window.innerWidth, 50);
-    textSuccesscontent.setTextBounds(0, 180, window.innerWidth, 50);
+    textFailHeadline = this.game.add.text(0, 0, "Too bad!", textStyle);
+    textFailHeadline.setTextBounds(0, 20, window.innerWidth, 20);
 
-    this.fail = game.add.sprite(150, window.innerHeight-800, 'fail_slim');
+    textFailcontent = this.game.add.text(0, 0, "Your partner wore out \nTake a break and keep training!", textStyleSmall);
+    textFailcontent.setTextBounds(0, 100, window.innerWidth, 100);
+
+    this.fail = game.add.sprite((game.world.width/2)-155, game.world.height-460, 'fail_slim');
     playState.sfx_exhausted.play();
     this.ButtonReturn = this.game.add.button(window.innerWidth/2, window.innerHeight-117, "button", this.retryGame);
     this.ButtonReturn.anchor.set(0.5);
@@ -350,6 +357,8 @@ failState = {
     this.ButtonReturn.anchor.set(0.5);
     textButtonReturn = this.game.add.text(20, 80, "Return to main menu", buttonText);
     textButtonReturn.setTextBounds(0,  window.innerHeight-147, window.innerWidth,0);
+
+
 
     //playState.sfx_cheer.play();
     
