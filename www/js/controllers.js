@@ -102,7 +102,7 @@ $scope.addArmScore = function() {
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
   
-  //var macAddress = $rootScope.macAdress;
+  var macAddress = $rootScope.macAdress;
   
   var macAddress = window.localStorage['macAdress'] || "20:13:07:18:02:77";
   console.log(macAddress);
@@ -239,7 +239,7 @@ $scope.addArmScore = function() {
   },
   returnBtn:function() {
     game.destroy();
-    //bluetoothSerial.disconnect();
+    bluetoothSerial.disconnect();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
@@ -327,7 +327,7 @@ failState = {
 
   returnBtn:function() {
     game.destroy();
-    //bluetoothSerial.disconnect();
+    bluetoothSerial.disconnect();
     $ionicHistory.nextViewOptions({
     disableBack: true
     });
