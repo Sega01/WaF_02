@@ -5,7 +5,7 @@ angular.module('starter.controllers', ['spotify', 'LocalStorageModule'])
   SpotifyProvider.setRedirectUri('<CALLBACK_URI>');
   SpotifyProvider.setScope('user-read-private playlist-read-private playlist-modify-private playlist-modify-public');
   // Token muss leider jede Stunde aktualisiert werden.  Mit dem Cordova OAuth haben wir es leider nicht hinbekomen
-  SpotifyProvider.setAuthToken('BQCtszuq4qKA8IjTVnSvekdDvj_B2azkD08-86sMNX65eS2f5jiQkE0dpNYwVnrHElEC1y9tnKGbNpd-d-y37Gs1NPbRNcUXSyZG7AgMTKAhU8w172uo2ABPxxdIhm7fkkNHrUJKZEOCoRRL35f9MD_QZJ5ah9T26sCML-fcaDR0z_QPI_eK1YIkgXnMKB5LHNFuZgLaeQIyfzji-90QaiTYT50OB2WJ8Q_hTFTxALIwjrEZ6yw0LECff573o-gF9S3qjjcsGRxJS3duTGKCnm0Xgry0uD2vJAu6RF1cq-ejfvzb');
+  SpotifyProvider.setAuthToken('BQBn8ZuWnvRdnYwN7lr1gJpqeWMX29QEuOa6XxF4byrFf5XV6d2gq2fmbiwzmNtPtbfo0QmBl4Hbo_a38lZ8oDqao5mfSauCUyDE3hDHxkWxsXdGN-ilFRFG8-VX85D9asf-ji0Y1K74luT7DiyIZ06pPVUMMWq4iS0m9tt7etsNScZ0jTg-Q79eT4-9eiYcsXr_wGMdjWhkghSrAhSZNkIypB7b3Tyjj3xymy-1RmbAsq34Fvg9qrCANQFaW0-nlBXc8tbGkgVKG6ASvujlAuK5UuOnpzrZdZ52Us9krCZJ2zol');
 })
 
 .controller('StartCtrl', function($scope, $timeout, $rootScope) {
@@ -97,14 +97,14 @@ $scope.addArmScore = function() {
 
 
 
-.controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher, $rootScope) {
+.controller('GameCtrl', function($scope, $state, $ionicHistory,$ionicViewSwitcher, $rootScope, $timeout) {
 
   var getScoreArms = $rootScope.scoreArms;
   console.log("Wert im Game-Controller:" + getScoreArms);
   
   var macAddress = $rootScope.macAdress;
   
-  var macAddress = window.localStorage['macAdress'] || "20:13:07:18:02:77";
+  var macAddress = window.localStorage['macAdress'] || "20:13:06:18:27:38";
   console.log(macAddress);
   bluetoothSerial.connect(macAddress, console.log("verbunden"), console.log("verbindung fehlgeschlagen"));
   
@@ -179,7 +179,7 @@ $scope.addArmScore = function() {
     this.rings = this.game.add.group();
     //timer
     this.timer = this.game.time.events.loop(750, addMore, this);
-    this.timerMoving = this.game.time.events.loop(1, ArduinoData, this);  
+    this.timerMoving = this.game.time.events.loop(20, ArduinoData, this);  
     this.gfx_health1 = game.add.sprite(window.innerWidth-80, 20, 'health');
     this.gfx_health2 = game.add.sprite(window.innerWidth-160, 20, 'health');
     this.gfx_health3 = game.add.sprite(window.innerWidth-240, 20, 'health');
@@ -193,6 +193,7 @@ $scope.addArmScore = function() {
       
     this.ButtonReturn = this.game.add.button(20, 20, "close", this.returnBtn);
     this.moving = 0;
+    this.pauseMoving = 0;
     movingArduino = 0;
     this.sfx_hit = this.game.add.audio('sfx_hit');
     this.sfx_miss = this.game.add.audio('sfx_miss');
@@ -384,8 +385,6 @@ gameoverState = {
     $ionicViewSwitcher.nextDirection('back');
     $state.go('app.start');
  
-    
-    
   },
   
 };
@@ -394,6 +393,10 @@ gameoverState = {
     $rootScope.scoreArms = getScoreArms + 1;
     window.localStorage['scoreArms'] = $rootScope.scoreArms;
     console.log("Neuer Wert:"+$rootScope.scoreArms);
+    /*** TEST Nach Update der Arme die Funktion ausführen um die Arme wieder zu aktivieren  ***/
+    $timeout(function() {
+      timerArms = 1;
+    }, 10000)
   }
 
   //play button
@@ -445,25 +448,27 @@ gameoverState = {
       ring.events.onOutOfBounds.add(missEnemy, this);
   }
 
-  ArduinoData =function() {
-      bluetoothSerial.readUntil('\n', function (data) {
+  ArduinoData = function() {
+    //bluetoothSerial.readUntil('\n', function (data) {
+    bluetoothSerial.read(function (data) {  
       movingArduino = data;
+      //console.log(data);
       movingArduino = parseInt(movingArduino);
     });
     this.moving = movingArduino;
-      if (this.moving == 1)
-      {   
-          if (this.circle.y == 200) 
-          {
-            this.circle.y = 400;
-          } else if (this.circle.y == 400)
-          {
-            this.circle.y = 200;
-          }
-      }
-      console.log(movingArduino);
-    }
 
+    if (this.moving == 1)
+    {   
+      if (this.circle.y == 200) 
+      {
+        this.circle.y = 400;
+      } else if (this.circle.y == 400)
+      {
+        this.circle.y = 200;
+      }
+    }
+    console.log(movingArduino);
+  }
 
   hitEnemy = function(circle, ring) {
     
@@ -522,7 +527,7 @@ gameoverState = {
 
 .controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, localStorageService) {
 
-  var macAddress = "20:13:07:18:02:77";
+  var macAddress = "20:13:06:18:27:38";
   
   $scope.setAdress = function(mac1, mac2, mac3, mac4, mac5, mac6) {
     tempMacAddress = mac1 + ":" + mac2 + ":" + mac3 + ":" + mac4 + ":" + mac5 + ":" + mac6;
@@ -551,6 +556,24 @@ gameoverState = {
      });
    };
 
+  $scope.setArmsOn1 = function() {
+    $rootScope.scoreArms = 1;
+    window.localStorage['scoreArms'] = $rootScope.scoreArms;
+    $scope.showAlertArms1();
+  }
+
+  $scope.setArmsOn2 = function() {
+    $rootScope.scoreArms = 2;
+    window.localStorage['scoreArms'] = $rootScope.scoreArms;
+    $scope.showAlertArms2();
+  }
+
+  $scope.setArmsOn3 = function() {
+    $rootScope.scoreArms = 3;
+    window.localStorage['scoreArms'] = $rootScope.scoreArms;
+    $scope.showAlertArms3();
+  }
+
   $scope.showAlertReset = function() {
      var alertPopup = $ionicPopup.alert({
        title: 'Done!',
@@ -558,12 +581,33 @@ gameoverState = {
      });
    };
 
+  $scope.showAlertArms1 = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Done!',
+       template: 'Wutz trained a little'
+     });
+   };
+
+  $scope.showAlertArms2 = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Done!',
+       template: 'WUTZ trained a little more!'
+     });
+   };
+
+  $scope.showAlertArms3 = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Done!',
+       template: 'WUTZ trained a lot!'
+     });
+   };
+
   
 })
 
-.controller('SpotifyCtrl', function($scope, Spotify) {
+.controller('SpotifyCtrl', function($scope, Spotify, $rootScope, localStorageService) {
   //access token 
-  Spotify
+  /*Spotify
   .getPlaylist('bastibastek', '25PAIlZRfztr8P43kEdbEZ')
   .then(function (data) {
     console.log(data);
@@ -575,8 +619,7 @@ gameoverState = {
     }
     
   });
-
-
+  */
 })
 
 .controller('ImpressumCtrl', function($scope, Spotify) {
